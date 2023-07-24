@@ -8,7 +8,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class CreateStudentCommand {
+public class CreateTeacherCommand {
     @NotBlank
     private String firstName;
     @NotBlank

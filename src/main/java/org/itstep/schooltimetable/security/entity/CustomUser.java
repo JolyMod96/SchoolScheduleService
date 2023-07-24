@@ -35,7 +35,7 @@ public class CustomUser implements UserDetails {
 
     boolean enabled = true;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private Set<CustomRole> authorities = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
@@ -47,6 +47,11 @@ public class CustomUser implements UserDetails {
     public CustomUser(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public void removeAllRoles() {
+        authorities.forEach(role -> role.getUsers().remove(this));
+        authorities.clear();
     }
 
     public void addRole(CustomRole... roles) {
