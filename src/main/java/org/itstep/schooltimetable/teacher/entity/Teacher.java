@@ -1,4 +1,4 @@
-package org.itstep.schooltimetable.student.entity;
+package org.itstep.schooltimetable.teacher.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,10 +9,10 @@ import org.itstep.schooltimetable.security.entity.CustomUser;
 
 @Data
 @Entity
-@Table(name = "students")
+@Table(name = "teachers")
 @EqualsAndHashCode(exclude = "user")
 @NoArgsConstructor
-public class Student {
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +24,7 @@ public class Student {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private CustomUser user;
 
-    public Student(String firstName, String lastName) {
+    public Teacher(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }

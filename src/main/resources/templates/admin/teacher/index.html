@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher page</title>
+  <style>
+    * {
+      background: red;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<h1>Teacher page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Login</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+  </tr>
+  <tr th:each="teacher : ${teachers}">
+    <td th:text="${teacher.id}" />
+    <td th:text="${teacher.user.username}" />
+    <td th:text="${teacher.firstName}" />
+    <td th:text="${teacher.lastName}" />
+    <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/edit'">Edit</a></td>
+    <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/delete'">Delete</a></td>
+  </tr>
+</table>
+</body>
+</html>

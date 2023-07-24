@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.itstep.schooltimetable.student.entity.Student;
+import org.itstep.schooltimetable.teacher.entity.Teacher;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
@@ -34,15 +35,23 @@ public class CustomUser implements UserDetails {
 
     boolean enabled = true;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private Set<CustomRole> authorities = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
     private Student student;
 
+    @OneToOne(mappedBy = "user")
+    private Teacher teacher;
+
     public CustomUser(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public void removeAllRoles() {
+        authorities.forEach(role -> role.getUsers().remove(this));
+        authorities.clear();
     }
 
     public void addRole(CustomRole... roles) {

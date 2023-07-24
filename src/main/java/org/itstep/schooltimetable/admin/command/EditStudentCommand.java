@@ -8,13 +8,9 @@ import lombok.*;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class CreateStudentCommand {
+public class EditStudentCommand {
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
-    private String login;
-    @NotBlank
-    private String password;
 }
