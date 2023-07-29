@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Group page</title>
+    <style>
+        * {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Group page</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    <tr th:each="group : ${groups}">
+        <td th:text="${group.id}" />
+        <td th:text="${group.name}" />
+        <td><a th:href="'/admin/group/' + ${group.id} + '/edit'">Edit</a></td>
+        <td><a th:href="'/admin/group/' + ${group.id} + '/delete'">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>

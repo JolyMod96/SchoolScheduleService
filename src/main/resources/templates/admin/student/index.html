@@ -13,6 +13,7 @@
 <body>
 <h1>Student page</h1>
 <p th:text="${'Welcome ' + #authentication.name}"></p>
+
 <table>
     <tr>
         <th>Id</th>
@@ -25,8 +26,10 @@
         <td th:text="${student.user.username}" />
         <td th:text="${student.firstName}" />
         <td th:text="${student.lastName}" />
-        <td><a th:href="'/admin/teacher/' + ${student.id} + '/edit'">Edit</a></td>
-        <td><a th:href="'/admin/teacher/' + ${student.id} + '/delete'">Delete</a></td>
+        <td><a th:href="'/admin/student/' + ${student.id} + '/add-to-group'">Add To Group</a></td>
+        <td><a th:href="'/admin/student/' + ${student.id} + '/remove-from-group'">Remove From Group</a></td>
+        <td><a th:href="'/admin/student/' + ${student.id} + '/edit'">Edit</a></td>
+        <td><a th:href="'/admin/student/' + ${student.id} + '/delete'">Delete</a></td>
     </tr>
 </table>
 </body>

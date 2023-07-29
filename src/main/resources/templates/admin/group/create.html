@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Group page</title>
+    <style>
+        * {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Group page</h1>
+
+<form method="post" th:object="${command}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <label>Name:
+        <input type="text" th:field="*{name}">
+    </label>
+    <br />
+    <input type="submit" />
+</form>
+</body>
+</html>

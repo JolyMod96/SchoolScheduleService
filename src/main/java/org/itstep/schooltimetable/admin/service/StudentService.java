@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
 import org.itstep.schooltimetable.admin.command.EditStudentCommand;
 import org.itstep.schooltimetable.admin.command.EditTeacherCommand;
+import org.itstep.schooltimetable.group.entity.Group;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
 import org.itstep.schooltimetable.student.entity.Student;
@@ -52,5 +53,19 @@ public class StudentService {
     @Transactional
     public void delete(Student student) {
         studentRepository.delete(student);
+    }
+
+    public void addToGroup(long id, Group group) {
+        var student = studentRepository.findById(id).orElseThrow();
+        if (student.getGroup() != null) {
+            student.removeFromGroup();
+        }
+        student.setGroup(group);
+    }
+
+    public void removeFromGroup(Student student) {
+        if (student.getGroup() != null) {
+            student.removeFromGroup();
+        }
     }
 }

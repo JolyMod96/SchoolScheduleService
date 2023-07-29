@@ -3,6 +3,8 @@ package org.itstep.schooltimetable.admin.controller;
 import lombok.RequiredArgsConstructor;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
 import org.itstep.schooltimetable.admin.command.EditStudentCommand;
+import org.itstep.schooltimetable.admin.command.SelectGroupCommand;
+import org.itstep.schooltimetable.admin.service.GroupService;
 import org.itstep.schooltimetable.admin.service.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AdminStudentController {
     private final StudentService studentService;
+    private final GroupService groupService;
 
     @GetMapping(path = {"/admin/student/", "/admin/student"})
     public String index(Model model) {
@@ -41,8 +44,8 @@ public class AdminStudentController {
     }
 
     @GetMapping(path = {"/admin/student/{id}/edit", "/admin/student/{id}/edit/"})
-    public String teacherEdit(@PathVariable(value = "id") long id, Model model) {
-        var student =  studentService.findById(id).orElseThrow();
+    public String studentEdit(@PathVariable(value = "id") long id, Model model) {
+        var student = studentService.findById(id).orElseThrow();
         var command = new EditStudentCommand(student.getFirstName(), student.getLastName());
         model.addAttribute("command", command);
         return "admin/student/edit";
@@ -62,6 +65,30 @@ public class AdminStudentController {
     public String delete(@PathVariable(value = "id") long id) {
         var student = studentService.findById(id).orElseThrow();
         studentService.delete(student);
+        return "redirect:/admin/student/";
+    }
+
+    @GetMapping(path = {"/admin/student/{id}/add-to-group", "/admin/student/{id}/add-to-group/"})
+    public String addToGroup(@PathVariable(value = "id") long id, Model model) {
+        studentService.findById(id).orElseThrow();
+        model.addAttribute("groupsCommand", new SelectGroupCommand(groupService.findAllGroups(), groupService.findAllGroups().get(0)));
+        return "admin/student/addtogroup";
+    }
+
+    @PostMapping(path = {"/admin/student/{id}/add-to-group", "/admin/student/{id}/add-to-group/"})
+    public String addStudentToGroup(@PathVariable(value = "id") long id, @Validated SelectGroupCommand command, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("command", command);
+            return "admin/student/addtogroup";
+        }
+        studentService.addToGroup(id, command.getSelectedGroup());
+        return "redirect:/admin/student/";
+    }
+
+    @GetMapping(path = {"/admin/student/{id}/remove-from-group", "/admin/student/{id}/remove-from-group/"})
+    public String removeFromGroup(@PathVariable(value = "id") long id) {
+        var student = studentService.findById(id).orElseThrow();
+        studentService.removeFromGroup(student);
         return "redirect:/admin/student/";
     }
 
