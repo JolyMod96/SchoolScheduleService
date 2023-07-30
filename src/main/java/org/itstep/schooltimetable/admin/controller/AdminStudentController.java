@@ -30,6 +30,7 @@ public class AdminStudentController {
     public String studentCreate(Model model) {
         //model.addAttribute("students", studentService.findAllStudents());
         model.addAttribute("command", new CreateStudentCommand());
+        model.addAttribute("groups", groupService.findAllGroups());
         return "/admin/student/create";
     }
 
@@ -71,17 +72,18 @@ public class AdminStudentController {
     @GetMapping(path = {"/admin/student/{id}/add-to-group", "/admin/student/{id}/add-to-group/"})
     public String addToGroup(@PathVariable(value = "id") long id, Model model) {
         studentService.findById(id).orElseThrow();
-        model.addAttribute("groupsCommand", new SelectGroupCommand(groupService.findAllGroups(), groupService.findAllGroups().get(0)));
+//        model.addAttribute("groupsCommand", new SelectGroupCommand(groupService.findAllGroups(), groupService.findAllGroups().get(0)));
+        model.addAttribute("groups", groupService.findAllGroups());
         return "admin/student/addtogroup";
     }
 
     @PostMapping(path = {"/admin/student/{id}/add-to-group", "/admin/student/{id}/add-to-group/"})
-    public String addStudentToGroup(@PathVariable(value = "id") long id, @Validated SelectGroupCommand command, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
-            model.addAttribute("command", command);
-            return "admin/student/addtogroup";
-        }
-        studentService.addToGroup(id, command.getSelectedGroup());
+    public String addStudentToGroup(@PathVariable(value = "id") long id, Long groupId) {
+//        if(bindingResult.hasErrors()) {
+//            model.addAttribute("command", command);
+//            return "admin/student/addtogroup";
+//        }
+        studentService.addToGroup(id, groupId);
         return "redirect:/admin/student/";
     }
 

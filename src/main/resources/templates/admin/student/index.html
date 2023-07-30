@@ -14,6 +14,12 @@
 <h1>Student page</h1>
 <p th:text="${'Welcome ' + #authentication.name}"></p>
 
+<nav>
+    <menu>
+        <li><a th:href="@{/admin/student/create}">Create</a></li>
+    </menu>
+</nav>
+
 <table>
     <tr>
         <th>Id</th>

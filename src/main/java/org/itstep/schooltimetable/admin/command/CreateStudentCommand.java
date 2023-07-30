@@ -17,4 +17,5 @@ public class CreateStudentCommand {
     private String login;
     @NotBlank
     private String password;
+    private Long groupId;
 }

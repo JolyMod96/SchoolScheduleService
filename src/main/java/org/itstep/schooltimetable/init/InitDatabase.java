@@ -1,6 +1,9 @@
 package org.itstep.schooltimetable.init;
 
 import lombok.RequiredArgsConstructor;
+import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
+import org.itstep.schooltimetable.admin.service.GroupService;
+import org.itstep.schooltimetable.admin.service.StudentService;
 import org.itstep.schooltimetable.security.entity.CustomRole;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
@@ -15,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class InitDatabase implements CommandLineRunner {
     private final CustomRoleRepository roleRepository;
     private final CustomUserRepository userRepository;
+    private final StudentService studentService;
+    private final GroupService groupService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -30,5 +35,8 @@ public class InitDatabase implements CommandLineRunner {
         var student = new CustomUser("student", passwordEncoder.encode("student"));
         student.addRole(roleStudent);
         userRepository.save(student);
+
+        studentService.save(new CreateStudentCommand("test", "test", "test", "test", null));
+        groupService.save("test group");
     }
 }

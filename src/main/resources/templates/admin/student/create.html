@@ -32,6 +32,14 @@
     <input type="password" th:field="*{password}">
   </label>
   <br />
+  <label>
+    Group:
+    <select th:field="*{groupId}">
+        <option value="-1">--</option>
+        <option th:each="group: ${groups}" th:value="${group.id}" th:text="${group.name}" />
+    </select>
+  </label>
+  <br />
   <input type="submit" />
 </form>
 </body>
