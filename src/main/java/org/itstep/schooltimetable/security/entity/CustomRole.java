@@ -27,7 +27,7 @@ public class CustomRole implements GrantedAuthority {
     )
     private Set<CustomUser> users = new HashSet<>();
 
-    public CustomRole(@NonNull String authority) {
+    public CustomRole(String authority) {
         this.authority = authority;
     }
 }

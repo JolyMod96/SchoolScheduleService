@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Teacher page</title>
   <style>
     * {
@@ -13,18 +16,32 @@
 <body>
 <h1>Teacher page</h1>
 <p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<nav>
+  <menu>
+    <li><a th:href="@{/admin}">Admin panel</a></li>
+    <li><a th:href="@{/admin/teacher/create}">Create teacher</a></li>
+  </menu>
+</nav>
+
 <table>
   <tr>
     <th>Id</th>
     <th>Login</th>
     <th>First Name</th>
     <th>Last Name</th>
+    <th>User Id</th>
+    <th>Login</th>
+    <th>Subjects</th>
   </tr>
   <tr th:each="teacher : ${teachers}">
     <td th:text="${teacher.id}" />
     <td th:text="${teacher.user.username}" />
     <td th:text="${teacher.firstName}" />
     <td th:text="${teacher.lastName}" />
+    <td th:text="${teacher.user.id}" />
+    <td th:text="${teacher.user.username}" />
+    <td th:text="${#strings.arrayAppend(teacher.subjects.toArray(), ', ')}" />
     <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/edit'">Edit</a></td>
     <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/delete'">Delete</a></td>
   </tr>

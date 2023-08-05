@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Group page</title>
+    <style>
+        * {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Group page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<nav>
+    <menu>
+        <li><a th:href="@{/admin}">Admin panel</a></li>
+        <li><a th:href="@{/admin/group/create}">Create group</a></li>
+    </menu>
+</nav>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Number of Students</th>
+        <th>Subjects</th>
+    </tr>
+    <tr th:each="group : ${groups}">
+        <td th:text="${group.id}" />
+        <td th:text="${group.name}" />
+        <td th:text="${group.students.size()}" />
+        <td th:text="${#strings.arrayAppend(group.subjects.toArray(), ', ')}" />
+        <td><a th:href="'/admin/group/' + ${group.id} + '/edit'">Edit</a></td>
+        <td><a th:href="'/admin/group/' + ${group.id} + '/delete'">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>

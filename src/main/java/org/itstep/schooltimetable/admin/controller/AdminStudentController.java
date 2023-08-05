@@ -3,6 +3,7 @@ package org.itstep.schooltimetable.admin.controller;
 import lombok.RequiredArgsConstructor;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
 import org.itstep.schooltimetable.admin.command.EditStudentCommand;
+import org.itstep.schooltimetable.admin.service.GroupService;
 import org.itstep.schooltimetable.admin.service.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AdminStudentController {
     private final StudentService studentService;
+    private final GroupService groupService;
 
     @GetMapping(path = {"/admin/student/", "/admin/student"})
     public String index(Model model) {
@@ -27,6 +29,7 @@ public class AdminStudentController {
     public String studentCreate(Model model) {
         //model.addAttribute("students", studentService.findAllStudents());
         model.addAttribute("command", new CreateStudentCommand());
+        model.addAttribute("groups", groupService.findAllGroups());
         return "/admin/student/create";
     }
 
@@ -41,10 +44,11 @@ public class AdminStudentController {
     }
 
     @GetMapping(path = {"/admin/student/{id}/edit", "/admin/student/{id}/edit/"})
-    public String teacherEdit(@PathVariable(value = "id") long id, Model model) {
-        var student =  studentService.findById(id).orElseThrow();
-        var command = new EditStudentCommand(student.getFirstName(), student.getLastName());
+    public String studentEdit(@PathVariable(value = "id") long id, Model model) {
+        var student = studentService.findById(id).orElseThrow();
+        var command = new EditStudentCommand(student.getFirstName(), student.getLastName(), student.getGroup() != null ? student.getGroup().getId() : -1);
         model.addAttribute("command", command);
+        model.addAttribute("groups", groupService.findAllGroups());
         return "admin/student/edit";
     }
 

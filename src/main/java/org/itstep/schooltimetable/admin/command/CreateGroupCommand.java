@@ -11,14 +11,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class CreateTeacherCommand {
+public class CreateGroupCommand {
     @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    @NotBlank
-    private String login;
-    @NotBlank
-    private String password;
+    private String name;
     private List<Long> subjectsId = new ArrayList<>();
 }

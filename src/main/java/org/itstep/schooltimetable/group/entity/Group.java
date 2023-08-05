@@ -1,4 +1,4 @@
-package org.itstep.schooltimetable.teacher.entity;
+package org.itstep.schooltimetable.group.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -6,52 +6,61 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.itstep.schooltimetable.security.entity.CustomUser;
+import org.itstep.schooltimetable.student.entity.Student;
 import org.itstep.schooltimetable.subject.entity.Subject;
 
 import java.util.*;
 
 @Data
 @Entity
-@Table(name = "teachers")
-@EqualsAndHashCode(exclude = {"user", "subjects"})
-@ToString(exclude = {"user", "subjects"})
+@Table(name = "groups")
+@EqualsAndHashCode(exclude = {"students", "subjects"})
+@ToString(exclude = "subjects")
 @NoArgsConstructor
-public class Teacher {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
+    private String name;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private CustomUser user;
+    @OneToMany(mappedBy = "group")
+    private Set<Student> students = new HashSet<>();
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany(mappedBy = "groups")
     private Set<Subject> subjects = new HashSet<>();
 
-    public Teacher(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Group(String name) {
+        this.name = name;
     }
 
     @PreRemove
-    public void prepareToRemoveTeacherAndUser() {
+    public void prepareToRemoveGroup() {
         removeAllSubjects();
-        user.removeAllRoles();
+        removeAllStudents();
+    }
+
+    public void removeAllStudents() {
+        students.forEach(student -> student.setGroup(null));
+        students.clear();
+    }
+
+    public void addStudents(Student... students) {
+        Arrays.stream(students).forEach(student -> {
+            this.students.add(student);
+            student.setGroup(this);
+        });
     }
 
     public void removeAllSubjects() {
-        subjects.forEach(subject -> subject.getTeachers().remove(this));
+        subjects.forEach(subject -> subject.getGroups().remove(this));
         subjects.clear();
     }
 
     public void addSubjects(Subject... subjects) {
         Arrays.stream(subjects).forEach(subject -> {
             this.subjects.add(subject);
-            subject.getTeachers().add(this);
+            subject.getGroups().add(this);
         });
     }
 

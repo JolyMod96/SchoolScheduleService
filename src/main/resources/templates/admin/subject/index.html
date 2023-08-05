@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Subject page</title>
+    <style>
+        * {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Subject page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<nav>
+    <menu>
+        <li><a th:href="@{/admin}">Admin panel</a></li>
+        <li><a th:href="@{/admin/subject/create}">Create subject</a></li>
+    </menu>
+</nav>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    <tr th:each="subject : ${subjects}">
+        <td th:text="${subject.id}" />
+        <td th:text="${subject.name}" />
+        <td><a th:href="'/admin/subject/' + ${subject.id} + '/edit'">Edit</a></td>
+        <td><a th:href="'/admin/subject/' + ${subject.id} + '/delete'">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>

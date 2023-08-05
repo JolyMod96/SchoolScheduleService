@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Student page</title>
     <style>
         * {
@@ -13,20 +16,36 @@
 <body>
 <h1>Student page</h1>
 <p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<nav>
+    <menu>
+        <li><a th:href="@{/admin}">Admin panel</a></li>
+        <li><a th:href="@{/admin/student/create}">Create student</a></li>
+    </menu>
+</nav>
+
 <table>
     <tr>
         <th>Id</th>
         <th>Login</th>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>User Id</th>
+        <th>Username</th>
+        <th>Group Id</th>
+        <th>Group name</th>
     </tr>
     <tr th:each="student : ${students}">
         <td th:text="${student.id}" />
         <td th:text="${student.user.username}" />
         <td th:text="${student.firstName}" />
         <td th:text="${student.lastName}" />
-        <td><a th:href="'/admin/teacher/' + ${student.id} + '/edit'">Edit</a></td>
-        <td><a th:href="'/admin/teacher/' + ${student.id} + '/delete'">Delete</a></td>
+        <td th:text="${student.user.id}" />
+        <td th:text="${student.user.username}" />
+        <td th:text="${student.group != null} ? ${student.group.id} : 'NA'" />
+        <td th:text="${student.group != null} ? ${student.group.name} : 'NA'" />
+        <td><a th:href="'/admin/student/' + ${student.id} + '/edit'">Edit</a></td>
+        <td><a th:href="'/admin/student/' + ${student.id} + '/delete'">Delete</a></td>
     </tr>
 </table>
 </body>

@@ -35,7 +35,7 @@ public class CustomUser implements UserDetails {
 
     boolean enabled = true;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "users")
     private Set<CustomRole> authorities = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
