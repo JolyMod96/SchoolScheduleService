@@ -5,14 +5,15 @@ import org.itstep.schooltimetable.admin.command.CreateTeacherCommand;
 import org.itstep.schooltimetable.admin.command.EditTeacherCommand;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
-import org.itstep.schooltimetable.security.repository.CustomUserRepository;
+import org.itstep.schooltimetable.subject.entity.Subject;
+import org.itstep.schooltimetable.subject.repository.SubjectRepository;
 import org.itstep.schooltimetable.teacher.entity.Teacher;
 import org.itstep.schooltimetable.teacher.repository.TeacherRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeacherService {
     private final TeacherRepository teacherRepository;
-    private final CustomUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomRoleRepository customRoleRepository;
+    private final SubjectRepository subjectRepository;
 
     @Transactional
     public Teacher save(CreateTeacherCommand command) {
@@ -31,6 +32,15 @@ public class TeacherService {
         user.addRole(teacherRole);
         var teacher = new Teacher(command.getFirstName(), command.getLastName());
         teacher.setUser(user);
+        command.getSubjectsId().forEach(subjectId -> {
+            Optional<Subject> subject = subjectRepository.findById(subjectId);
+            if (subject.isPresent()) {
+                teacher.addSubjects(subject.get());
+            }
+            else {
+                throw new RuntimeException("Subject(s) not found");
+            }
+        });
         return teacherRepository.save(teacher);
     }
 
@@ -47,11 +57,46 @@ public class TeacherService {
         var teacher = teacherRepository.findById(id).orElseThrow();
         teacher.setFirstName(command.getFirstName());
         teacher.setLastName(command.getLastName());
+        teacher.removeAllSubjects();
+        command.getSubjectsId().forEach(subjectId -> {
+            Optional<Subject> subject = subjectRepository.findById(subjectId);
+            if (subject.isPresent()) {
+                teacher.addSubjects(subject.get());
+            }
+            else {
+                throw new RuntimeException("Subject(s) not found");
+            }
+        });
         teacherRepository.save(teacher);
     }
 
     @Transactional
     public void delete(Teacher teacher) {
         teacherRepository.delete(teacher);
+    }
+
+    public void removeSubjects(Teacher teacher) {
+        teacher.removeAllSubjects();
+        teacherRepository.save(teacher);
+    }
+
+    @Transactional
+    public void addSubject(long id, Long... subjectsId) {
+        Optional<Teacher> teacher = teacherRepository.findById(id);
+        if (teacher.isPresent()) {
+            Arrays.stream(subjectsId).forEach(subjectId -> {
+                Optional<Subject> subject = subjectRepository.findById(subjectId);
+                if (subject.isPresent()) {
+                    teacher.get().addSubjects(subject.get());
+                }
+                else {
+                    throw new RuntimeException("Subject(s) not found");
+                }
+            });
+            teacherRepository.save(teacher.get());
+        }
+        else {
+            throw new RuntimeException("Teacher not found");
+        }
     }
 }

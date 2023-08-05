@@ -34,7 +34,10 @@ public class Student {
     }
 
     @PreRemove
-    public void prepareToRemoveUser() {
+    public void prepareToRemoveStudentAndUser() {
+        if (group != null) {
+            removeFromGroup();
+        }
         user.removeAllRoles();
     }
 

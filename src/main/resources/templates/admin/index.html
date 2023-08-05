@@ -5,7 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin controller</title>
+    <title>Admin page</title>
+    <style>
+        * {
+            background: red;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -13,6 +19,7 @@
             <li><a th:href="@{/admin/student}">Students</a></li>
             <li><a th:href="@{/admin/group}">Groups</a></li>
             <li><a th:href="@{/admin/teacher}">Teachers</a></li>
+            <li><a th:href="@{/admin/subject}">Subjects</a></li>
             <li><a th:href="@{/h2-console}">H2 Console</a></li>
         </menu>
     </nav>

@@ -3,14 +3,12 @@ package org.itstep.schooltimetable.admin.service;
 import lombok.RequiredArgsConstructor;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
 import org.itstep.schooltimetable.admin.command.EditStudentCommand;
-import org.itstep.schooltimetable.admin.command.EditTeacherCommand;
 import org.itstep.schooltimetable.group.entity.Group;
 import org.itstep.schooltimetable.group.repository.GroupRepository;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
 import org.itstep.schooltimetable.student.entity.Student;
 import org.itstep.schooltimetable.student.repository.StudentRepository;
-import org.itstep.schooltimetable.teacher.entity.Teacher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +46,16 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
+    @Transactional
     public void edit(long id, EditStudentCommand command) {
         var student = studentRepository.findById(id).orElseThrow();
         student.setFirstName(command.getFirstName());
         student.setLastName(command.getLastName());
         studentRepository.save(student);
+        removeFromGroupIfPresent(student);
+        if (command.getGroupId() != -1) {
+            addToGroup(id, command.getGroupId());
+        }
     }
 
     @Transactional
@@ -60,15 +63,7 @@ public class StudentService {
         studentRepository.delete(student);
     }
 
-    public void addToGroup(long id, Group group) {
-        var student = studentRepository.findById(id).orElseThrow();
-        if (student.getGroup() != null) {
-            student.removeFromGroup();
-        }
-        student.setGroup(group);
-    }
-
-    public void removeFromGroup(Student student) {
+    public void removeFromGroupIfPresent(Student student) {
         if (student.getGroup() != null) {
             student.removeFromGroup();
         }
@@ -82,6 +77,8 @@ public class StudentService {
         if (student.isPresent() && group.isPresent()) {
             student.get().setGroup(group.get());
             studentRepository.save(student.get());
+            group.get().getStudents().add(student.get());
+            groupRepository.save(group.get());
         } else {
             throw new RuntimeException("Student or group not found");
         }

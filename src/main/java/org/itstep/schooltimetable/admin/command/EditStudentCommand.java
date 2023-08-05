@@ -13,4 +13,5 @@ public class EditStudentCommand {
     private String firstName;
     @NotBlank
     private String lastName;
+    private Long groupId;
 }

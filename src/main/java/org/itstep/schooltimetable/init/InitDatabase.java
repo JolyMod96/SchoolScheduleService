@@ -1,9 +1,13 @@
 package org.itstep.schooltimetable.init;
 
 import lombok.RequiredArgsConstructor;
+import org.itstep.schooltimetable.admin.command.CreateGroupCommand;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
+import org.itstep.schooltimetable.admin.command.CreateTeacherCommand;
 import org.itstep.schooltimetable.admin.service.GroupService;
 import org.itstep.schooltimetable.admin.service.StudentService;
+import org.itstep.schooltimetable.admin.service.SubjectService;
+import org.itstep.schooltimetable.admin.service.TeacherService;
 import org.itstep.schooltimetable.security.entity.CustomRole;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
@@ -13,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Component
 @RequiredArgsConstructor
 public class InitDatabase implements CommandLineRunner {
@@ -20,6 +26,8 @@ public class InitDatabase implements CommandLineRunner {
     private final CustomUserRepository userRepository;
     private final StudentService studentService;
     private final GroupService groupService;
+    private final SubjectService subjectService;
+    private final TeacherService teacherService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -36,7 +44,12 @@ public class InitDatabase implements CommandLineRunner {
         student.addRole(roleStudent);
         userRepository.save(student);
 
-        studentService.save(new CreateStudentCommand("test", "test", "test", "test", null));
-        groupService.save("test group");
+        studentService.save(new CreateStudentCommand("testStudent", "testStudent", "testStudent", "testStudent", null));
+        groupService.save(new CreateGroupCommand("test group", new ArrayList<>()));
+
+        subjectService.save("test subject 1");
+        subjectService.save("test subject 2");
+        subjectService.save("test subject 3");
+        teacherService.save(new CreateTeacherCommand("testTeacher", "testTeacher", "testTeacher", "testTeacher", new ArrayList<>()));
     }
 }

@@ -3,16 +3,19 @@ package org.itstep.schooltimetable.group.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.itstep.schooltimetable.student.entity.Student;
+import org.itstep.schooltimetable.subject.entity.Subject;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
 @Table(name = "groups")
+@EqualsAndHashCode(exclude = {"students", "subjects"})
+@ToString(exclude = "subjects")
 @NoArgsConstructor
 public class Group {
     @Id
@@ -24,12 +27,16 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private Set<Student> students = new HashSet<>();
 
+    @ManyToMany(mappedBy = "groups")
+    private Set<Subject> subjects = new HashSet<>();
+
     public Group(String name) {
         this.name = name;
     }
 
     @PreRemove
     public void prepareToRemoveGroup() {
+        removeAllSubjects();
         removeAllStudents();
     }
 
@@ -38,10 +45,30 @@ public class Group {
         students.clear();
     }
 
-    public void addRole(Student... students) {
+    public void addStudents(Student... students) {
         Arrays.stream(students).forEach(student -> {
             this.students.add(student);
             student.setGroup(this);
         });
+    }
+
+    public void removeAllSubjects() {
+        subjects.forEach(subject -> subject.getGroups().remove(this));
+        subjects.clear();
+    }
+
+    public void addSubjects(Subject... subjects) {
+        Arrays.stream(subjects).forEach(subject -> {
+            this.subjects.add(subject);
+            subject.getGroups().add(this);
+        });
+    }
+
+    public List<Long> getSubjectsId() {
+        var subjectsId = new ArrayList<Long>();
+        subjects.forEach(subject -> {
+            subjectsId.add(subject.getId());
+        });
+        return subjectsId;
     }
 }

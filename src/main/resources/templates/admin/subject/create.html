@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Group page</title>
+    <title>Subject page</title>
     <style>
         * {
             background: red;
@@ -14,24 +14,13 @@
     </style>
 </head>
 <body>
-<h1>Group page</h1>
+<h1>Subject page</h1>
 
 <form method="post" th:object="${command}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     <label>Name:
         <input type="text" th:field="*{name}">
     </label>
-    <br />
-    <label>Subjects:</label>
-    <table>
-        <tr th:each="subject : ${subjects}">
-            <th>
-                <label>
-                    <input type="checkbox" th:field="*{subjectsId}" th:text="${subject.name}" th:value="${subject.id}">
-                </label>
-            </th>
-        </tr>
-    </table>
     <br />
     <input type="submit" />
 </form>

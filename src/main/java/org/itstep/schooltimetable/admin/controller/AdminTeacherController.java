@@ -3,6 +3,7 @@ package org.itstep.schooltimetable.admin.controller;
 import lombok.RequiredArgsConstructor;
 import org.itstep.schooltimetable.admin.command.CreateTeacherCommand;
 import org.itstep.schooltimetable.admin.command.EditTeacherCommand;
+import org.itstep.schooltimetable.admin.service.SubjectService;
 import org.itstep.schooltimetable.admin.service.TeacherService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AdminTeacherController {
     private final TeacherService teacherService;
+    private final SubjectService subjectService;
 
     @GetMapping(path = {"/admin/teacher/", "/admin/teacher"})
     public String index(Model model) {
@@ -27,6 +29,7 @@ public class AdminTeacherController {
     public String teacherCreate(Model model) {
        // model.addAttribute("teachers", teacherService.findAllTeachers());
         model.addAttribute("command", new CreateTeacherCommand());
+        model.addAttribute("subjects", subjectService.findAllSubjects());
         return "admin/teacher/create";
     }
 
@@ -43,8 +46,9 @@ public class AdminTeacherController {
     @GetMapping(path = {"/admin/teacher/{id}/edit", "/admin/teacher/{id}/edit/"})
     public String teacherEdit(@PathVariable(value = "id") long id, Model model) {
         var teacher =  teacherService.findById(id).orElseThrow();
-        var command = new EditTeacherCommand(teacher.getFirstName(), teacher.getLastName());
+        var command = new EditTeacherCommand(teacher.getFirstName(), teacher.getLastName(), teacher.getSubjectsId());
         model.addAttribute("command", command);
+        model.addAttribute("subjects", subjectService.findAllSubjects());
         return "admin/teacher/edit";
     }
 
