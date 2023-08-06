@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.itstep.schooltimetable.group.entity.Group;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 
@@ -12,6 +13,7 @@ import org.itstep.schooltimetable.security.entity.CustomUser;
 @Entity
 @Table(name = "students")
 @EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 @NoArgsConstructor
 public class Student {
     @Id
