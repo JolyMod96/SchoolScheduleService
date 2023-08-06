@@ -20,6 +20,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(antMatcher("/css/**")).permitAll()
+                        .requestMatchers(antMatcher("/icon/**")).permitAll()
+                        .requestMatchers(antMatcher("/images/**")).permitAll()
+                        .requestMatchers(antMatcher("/js/**")).permitAll()
                         .requestMatchers(antMatcher("/admin/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(antMatcher("/student/**")).hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
                         .requestMatchers(antMatcher("/teacher/**")).hasAnyAuthority("ROLE_TEACHER", "ROLE_ADMIN")
