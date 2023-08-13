@@ -41,7 +41,11 @@
     <td th:text="${teacher.lastName}" />
     <td th:text="${teacher.user.id}" />
     <td th:text="${teacher.user.username}" />
-    <td th:text="${#strings.arrayAppend(teacher.subjects.toArray(), ', ')}" />
+    <td>
+      <span th:each="subject, state: ${teacher.subjects}">
+        <span th:text="${subject.name}" /><span th:if="${!state.last}">,</span>
+      </span>
+    </td>
     <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/edit'">Edit</a></td>
     <td><a th:href="'/admin/teacher/' + ${teacher.id} + '/delete'">Delete</a></td>
   </tr>
