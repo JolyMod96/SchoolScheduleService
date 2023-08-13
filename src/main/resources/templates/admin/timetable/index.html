@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Group page</title>
+    <title>Timetable page</title>
     <style>
         * {
             background: red;
@@ -14,13 +14,12 @@
     </style>
 </head>
 <body>
-<h1>Group page</h1>
+<h1>Timetable page</h1>
 <p th:text="${'Welcome ' + #authentication.name}"></p>
 
 <nav>
     <menu>
         <li><a th:href="@{/admin}">Admin panel</a></li>
-        <li><a th:href="@{/admin/group/create}">Create group</a></li>
     </menu>
 </nav>
 
@@ -28,16 +27,15 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Number of Students</th>
-        <th>Subjects</th>
+        <th>Start Time</th>
+        <th>End Time</th>
     </tr>
-    <tr th:each="group : ${groups}">
-        <td th:text="${group.id}" />
-        <td th:text="${group.name}" />
-        <td th:text="${group.students.size()}" />
-        <td th:text="${#strings.arrayAppend(group.subjects.toArray(), ', ')}" />
-        <td><a th:href="@{/admin/group/{id}/edit(id=${group.id})}">Edit</a></td>
-        <td><a th:href="@{/admin/group/{id}/delete(id=${group.id})}">Delete</a></td>
+    <tr th:each="timetable : ${timetables}">
+        <td th:text="${timetable.id}" />
+        <td th:text="${timetable.name}" />
+        <td th:text="${timetable.getTimeStart}" />
+        <td th:text="${timetable.getTimeEnd}" />
+        <td><a th:href="@{/admin/timetable/{id}/edit(id=${timetable.id})}">Edit</a></td>
     </tr>
 </table>
 </body>

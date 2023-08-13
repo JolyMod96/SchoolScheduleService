@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.itstep.schooltimetable.schedule.entity.Schedule;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.subject.entity.Subject;
 
@@ -31,6 +32,9 @@ public class Teacher {
 
     @ManyToMany(mappedBy = "teachers")
     private Set<Subject> subjects = new HashSet<>();
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<Schedule> schedules;
 
     public Teacher(String firstName, String lastName) {
         this.firstName = firstName;

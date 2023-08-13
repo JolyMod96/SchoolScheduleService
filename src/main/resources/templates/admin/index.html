@@ -14,14 +14,32 @@
     </style>
 </head>
 <body>
+<h1>Admin page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+
     <nav>
         <menu>
             <li><a th:href="@{/admin/student}">Students</a></li>
             <li><a th:href="@{/admin/group}">Groups</a></li>
             <li><a th:href="@{/admin/teacher}">Teachers</a></li>
             <li><a th:href="@{/admin/subject}">Subjects</a></li>
+            <li><a th:href="@{/admin/timetable}">Timetables</a></li>
             <li><a th:href="@{/h2-console}">H2 Console</a></li>
+            <li th:if="${isAdminCreator}"><a th:href="@{/admin/create}">Create Admin</a></li>
         </menu>
     </nav>
+    <table th:if="${isAdminCreator}">
+        <tr>
+            <th>Id</th>
+            <th>Login</th>
+            <th>Is Admin Creator</th>
+        </tr>
+        <tr th:each="admin : ${admins}">
+            <td th:text="${admin.id}" />
+            <td th:text="${admin.username}" />
+            <td th:text="${admin.isAdminCreator}" />
+            <td th:if="${admin.username != #authentication.name}"><a th:href="@{/admin/{id}/delete(id=${admin.id})}">Delete</a></td>
+        </tr>
+    </table>
 </body>
 </html>

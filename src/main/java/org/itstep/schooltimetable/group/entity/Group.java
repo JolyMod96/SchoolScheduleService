@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.itstep.schooltimetable.schedule.entity.Schedule;
 import org.itstep.schooltimetable.student.entity.Student;
 import org.itstep.schooltimetable.subject.entity.Subject;
 
@@ -15,7 +16,7 @@ import java.util.*;
 @Entity
 @Table(name = "groups")
 @EqualsAndHashCode(exclude = {"students", "subjects"})
-@ToString(exclude = "subjects")
+@ToString(exclude = {"students", "subjects"})
 @NoArgsConstructor
 public class Group {
     @Id
@@ -29,6 +30,9 @@ public class Group {
 
     @ManyToMany(mappedBy = "groups")
     private Set<Subject> subjects = new HashSet<>();
+
+    @OneToMany(mappedBy = "group")
+    private Set<Schedule> schedules;
 
     public Group(String name) {
         this.name = name;

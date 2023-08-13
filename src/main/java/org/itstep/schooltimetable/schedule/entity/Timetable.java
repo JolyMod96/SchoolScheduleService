@@ -3,24 +3,39 @@ package org.itstep.schooltimetable.schedule.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.itstep.schooltimetable.converter.DurationConverter;
 
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "timetables")
-@Data
+@EqualsAndHashCode(exclude = "schedules")
+@ToString(exclude = "schedules")
 @NoArgsConstructor
 public class Timetable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Convert(converter = DurationConverter.class)
-    private Duration start;
+    private Duration timeStart;
     @Convert(converter = DurationConverter.class)
-    private Duration end;
+    private Duration timeEnd;
     @NotBlank
     @Column(unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "timetable")
+    private Set<Schedule> schedules = new HashSet<>();
+
+    public Timetable(Duration timeStart, Duration timeEnd, String name) {
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.name = name;
+    }
 }

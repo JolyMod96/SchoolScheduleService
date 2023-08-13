@@ -1,13 +1,13 @@
 package org.itstep.schooltimetable.init;
 
 import lombok.RequiredArgsConstructor;
+import org.itstep.schooltimetable.admin.command.CreateAdminCommand;
 import org.itstep.schooltimetable.admin.command.CreateGroupCommand;
 import org.itstep.schooltimetable.admin.command.CreateStudentCommand;
 import org.itstep.schooltimetable.admin.command.CreateTeacherCommand;
-import org.itstep.schooltimetable.admin.service.GroupService;
-import org.itstep.schooltimetable.admin.service.StudentService;
-import org.itstep.schooltimetable.admin.service.SubjectService;
-import org.itstep.schooltimetable.admin.service.TeacherService;
+import org.itstep.schooltimetable.admin.service.*;
+import org.itstep.schooltimetable.schedule.entity.Timetable;
+import org.itstep.schooltimetable.schedule.repository.TimetableRepository;
 import org.itstep.schooltimetable.security.entity.CustomRole;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.security.repository.CustomRoleRepository;
@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
 @Component
@@ -28,12 +29,15 @@ public class InitDatabase implements CommandLineRunner {
     private final GroupService groupService;
     private final SubjectService subjectService;
     private final TeacherService teacherService;
+    private final AdminService adminService;
+    private final TimetableRepository timetableRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        var roleAdminCreator = roleRepository.save(new CustomRole("ROLE_ADMIN_CREATOR"));
         var roleAdmin = roleRepository.save(new CustomRole("ROLE_ADMIN"));
         var roleStudent = roleRepository.save(new CustomRole("ROLE_STUDENT"));
         var roleTeacher = roleRepository.save(new CustomRole("ROLE_TEACHER"));
@@ -51,5 +55,10 @@ public class InitDatabase implements CommandLineRunner {
         subjectService.save("test subject 2");
         subjectService.save("test subject 3");
         teacherService.save(new CreateTeacherCommand("testTeacher", "testTeacher", "testTeacher", "testTeacher", new ArrayList<>()));
+
+        adminService.save(new CreateAdminCommand("adminCreator", "adminCreator", true));
+
+        var firstLesson = new Timetable(Duration.parse("PT8H30M"), Duration.parse("PT9H15M"), "first lesson");
+        timetableRepository.save(firstLesson);
     }
 }
