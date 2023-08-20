@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitDatabase implements CommandLineRunner {
     private final CustomRoleRepository roleRepository;
@@ -95,6 +95,9 @@ public class InitDatabase implements CommandLineRunner {
         var teacher2 = teacherService.save(new CreateTeacherCommand("teacher2", "teacher2", "teacher2", "teacher2", new ArrayList<>()));
         var teacher3 = teacherService.save(new CreateTeacherCommand("teacher3", "teacher3", "teacher3", "teacher3", new ArrayList<>()));
 
-        scheduleService.save(new CreateScheduleCommand(LocalDate.of(2023, 8, 14), LocalDate.of(2024, 8, 14), 1, List.of(dayOfWeekMonday.getId(), dayOfWeekFriday.getId()), firstLesson.getId(), group1.getId(), subject1.getId(), false, teacher1.getId()));
+        scheduleService.save(new CreateScheduleCommand(LocalDate.of(2023, 8, 14),
+                LocalDate.of(2024, 8, 14), 1,
+                List.of(dayOfWeekMonday.getId(), dayOfWeekFriday.getId()),
+                firstLesson.getId(), group1.getId(), subject1.getId(), false, teacher1.getId()));
     }
 }

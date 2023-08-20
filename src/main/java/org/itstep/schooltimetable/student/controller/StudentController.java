@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -64,8 +62,10 @@ public class StudentController {
         currentWeekSchedules.sort(Comparator.comparingLong(schedule -> schedule.getTimetable().getId()));
 
         var daysOfWeek = dayOfWeekRepository.findAll();
+        daysOfWeek.sort(Comparator.comparingLong(DayOfWeek::getId));
 
-        var weekDaysTimetablesSchedules = new HashMap<DayOfWeek, HashMap<Timetable, ArrayList<Schedule>>>();
+        var weekDaysTimetablesSchedules = new HashMap<DayOfWeek, Map<Timetable, List<Schedule>>>();
+
         for (var schedule : currentWeekSchedules) {
             for (var dayOfWeek : daysOfWeek) {
                 if (schedule.getDaysOfWeek().contains(dayOfWeek)) {
@@ -81,7 +81,9 @@ public class StudentController {
         }
 
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);
+        model.addAttribute("dayOfWeeks", daysOfWeek);
         var timetables = timetableRepository.findAll();
+        timetables.sort(Comparator.comparingLong(Timetable::getId));
         model.addAttribute("timetables", timetables);
         return "student/schedule/index";
     }

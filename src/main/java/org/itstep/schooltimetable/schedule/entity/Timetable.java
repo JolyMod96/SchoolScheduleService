@@ -38,4 +38,22 @@ public class Timetable {
         this.timeEnd = timeEnd;
         this.name = name;
     }
+
+    private static String convert(Duration duration) {
+        int minutesPart = duration.toMinutesPart();
+        long hours = duration.toHours();
+        return zeroIfNeed(hours) + hours + ":" + zeroIfNeed(minutesPart) + minutesPart;
+    }
+
+    private static String zeroIfNeed(long part) {
+        return part < 10 ? "0" : "";
+    }
+
+    public String getTimeStartHM() {
+        return convert(timeStart);
+    }
+
+    public String getTimeEndHM() {
+        return convert(timeEnd);
+    }
 }
