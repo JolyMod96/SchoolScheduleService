@@ -65,20 +65,17 @@ public class StudentController {
 
         var daysOfWeek = dayOfWeekRepository.findAll();
 
-        var weekDaysTimetablesSchedules = new ArrayList<HashMap<DayOfWeek, HashMap<Timetable, ArrayList<Schedule>>>>();
-        for (var i = 0; i < 7; i++) {
-            weekDaysTimetablesSchedules.add(new HashMap<>());
-            for (var schedule : currentWeekSchedules) {
-                for (var dayOfWeek : daysOfWeek) {
-                    if (schedule.getDaysOfWeek().contains(dayOfWeek)) {
-                        if (!weekDaysTimetablesSchedules.get(i).containsKey(dayOfWeek)) {
-                            weekDaysTimetablesSchedules.get(i).put(dayOfWeek, new HashMap<>());
-                        }
-                        if (!weekDaysTimetablesSchedules.get(i).get(dayOfWeek).containsKey(schedule.getTimetable())) {
-                            weekDaysTimetablesSchedules.get(i).get(dayOfWeek).put(schedule.getTimetable(), new ArrayList<Schedule>());
-                        }
-                        weekDaysTimetablesSchedules.get(i).get(dayOfWeek).get(schedule.getTimetable()).add(schedule);
+        var weekDaysTimetablesSchedules = new HashMap<DayOfWeek, HashMap<Timetable, ArrayList<Schedule>>>();
+        for (var schedule : currentWeekSchedules) {
+            for (var dayOfWeek : daysOfWeek) {
+                if (schedule.getDaysOfWeek().contains(dayOfWeek)) {
+                    if (!weekDaysTimetablesSchedules.containsKey(dayOfWeek)) {
+                        weekDaysTimetablesSchedules.put(dayOfWeek, new HashMap<>());
                     }
+                    if (!weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(schedule.getTimetable())) {
+                        weekDaysTimetablesSchedules.get(dayOfWeek).put(schedule.getTimetable(), new ArrayList<>());
+                    }
+                    weekDaysTimetablesSchedules.get(dayOfWeek).get(schedule.getTimetable()).add(schedule);
                 }
             }
         }

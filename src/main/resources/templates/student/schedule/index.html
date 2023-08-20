@@ -12,13 +12,11 @@
 <p th:text="${'Welcome ' + #authentication.name}"></p>
 
 <div th:each="weekDayTimetablesSchedules : ${weekDaysTimetablesSchedules}">
-  <span th:each="weekDayTimetableSchedules : ${weekDayTimetablesSchedules}">
-    <span th:each="schedules : ${weekDayTimetableSchedules.getValue()}">
+  <span th:each="schedules : ${weekDayTimetableSchedules.getValue()}">
       <span th:each="schedule, state : ${schedules.getValue()}">
         <span th:text="${schedule.subject + ' (' + schedule.teacher.firstName + ' ' + schedule.teacher.lastName + ')'}"></span><span th:if="${!state.last}">,</span>
       </span>
     </span>
-  </span>
 </div>
 </body>
 </html>

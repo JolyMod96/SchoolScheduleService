@@ -34,7 +34,7 @@ public class Teacher {
     private Set<Subject> subjects = new HashSet<>();
 
     @OneToMany(mappedBy = "teacher")
-    private Set<Schedule> schedules;
+    private Set<Schedule> schedules = new HashSet<>();
 
     public Teacher(String firstName, String lastName) {
         this.firstName = firstName;

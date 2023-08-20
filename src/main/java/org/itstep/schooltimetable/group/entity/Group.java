@@ -32,7 +32,7 @@ public class Group {
     private Set<Subject> subjects = new HashSet<>();
 
     @OneToMany(mappedBy = "group")
-    private Set<Schedule> schedules;
+    private Set<Schedule> schedules = new HashSet<>();
 
     public Group(String name) {
         this.name = name;

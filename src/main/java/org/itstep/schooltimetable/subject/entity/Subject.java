@@ -45,7 +45,7 @@ public class Subject {
     private Set<Teacher> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "subject")
-    private Set<Schedule> schedules;
+    private Set<Schedule> schedules = new HashSet<>();
 
     public Subject(String name) {
         this.name = name;
