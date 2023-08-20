@@ -55,7 +55,7 @@ public class AdminScheduleController {
     @GetMapping(path = { "/admin/schedule/{id}/edit/", "/admin/schedule/{id}/edit" })
     public String scheduleEdit(@PathVariable(value = "id") long id, Model model) {
         var schedule = scheduleService.findById(id).orElseThrow();
-        var command = new EditScheduleCommand(schedule.getDateStart(), schedule.getDateEnd(), schedule.getWeeksRepeat(), schedule.getDaysOfWeekId(), schedule.getTimetable().getId(), schedule.getSubject().getId(), schedule.getGroup().getId(), schedule.getTeacher().getId());
+        var command = new EditScheduleCommand(schedule.getDateStart(), schedule.getDateEnd(), schedule.getWeeksRepeat(), schedule.getDaysOfWeekId(), schedule.getTimetable().getId(), schedule.getSubject().getId(), schedule.getGroup().getId(), false, schedule.getTeacher().getId());
         model.addAttribute("command", command);
         model.addAttribute("daysOfWeek", dayOfWeekRepository.findAll());
         model.addAttribute("timetables", timetableService.findAllTimetables());
@@ -64,4 +64,22 @@ public class AdminScheduleController {
         model.addAttribute("teachers", teacherService.findAllTeachers());
         return "/admin/schedule/edit";
     }
+
+    @PostMapping(path = { "/admin/schedule/{id}/edit/", "/admin/schedule/{id}/edit" })
+    public String update(@PathVariable(value = "id") long id, @Validated EditScheduleCommand command, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("command", command);
+            return "/admin/schedule/edit";
+        }
+        scheduleService.edit(id, command);
+        return "redirect:/admin/schedule";
+    }
+
+    @GetMapping(path = { "/admin/schedule/{id}/delete/", "/admin/schedule/{id}/delete" })
+    public String delete(@PathVariable(value = "id") long id) {
+        var schedule = scheduleService.findById(id).orElseThrow();
+        scheduleService.delete(schedule);
+        return "redirect:/admin/schedule";
+    }
+
 }

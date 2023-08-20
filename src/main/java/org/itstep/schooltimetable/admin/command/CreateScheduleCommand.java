@@ -16,7 +16,8 @@ public class CreateScheduleCommand {
     private Integer weeksRepeat;
     private List<Long> daysOfWeekId;
     private Long timetableId;
-    private Long subjectId;
     private Long groupId;
+    private Long subjectId;
+    private Boolean isSubstituteTeacher;
     private Long teacherId;
 }

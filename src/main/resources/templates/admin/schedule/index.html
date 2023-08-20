@@ -15,6 +15,56 @@
 </head>
 <body>
 <h1>Schedule page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
 
+<nav>
+    <menu>
+        <li><a th:href="@{/admin}">Admin Panel</a></li>
+        <li><a th:href="@{/admin/schedule/create}">Create Schedule</a></li>
+    </menu>
+</nav>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Date Start</th>
+        <th>Date End</th>
+        <th>Weeks Repeat</th>
+        <th>Days Of Week</th>
+        <th>Timetable Id</th>
+        <th>Timetable Time</th>
+        <th>Timetable Name</th>
+        <th>Group Id</th>
+        <th>Group Name</th>
+        <th>Subject Id</th>
+        <th>Subject Name</th>
+        <th>Teacher Id</th>
+        <th>Teacher Name</th>
+        <th>Is Substitute Teacher</th>
+    </tr>
+    <tr th:each="schedule : ${schedules}">
+        <td th:text="${schedule.id}" />
+        <td th:text="${schedule.dateStart}" />
+        <td th:text="${schedule.dateEnd}" />
+        <td th:text="${schedule.weeksRepeat}" />
+        <td>
+            <span th:each="dayOfWeek, state : ${schedule.daysOfWeek}">
+                <span th:text="${dayOfWeek.name}" /><span th:if="${!state.last}">,</span>
+            </span>
+        </td>
+        <td th:text="${schedule.timetable.id}" />
+        <td th:text="${schedule.timetable.timeStart + '-' + schedule.timetable.timeEnd}" />
+        <td th:text="${schedule.timetable.name}" />
+        <td th:text="${schedule.group.id}" />
+        <td th:text="${schedule.group.name}" />
+        <td th:text="${schedule.subject.id}" />
+        <td th:text="${schedule.subject.name}" />
+        <td th:text="${schedule.teacher.id}" />
+        <td th:text="${schedule.teacher.firstName + ' ' + schedule.teacher.lastName}" />
+        <td th:text="${schedule.isSubstituteTeacher}" />
+        <td><a th:href="@{/admin/schedule/{id}/edit(id=${schedule.id})}">Edit</a></td>
+        <td><a th:href="@{/admin/schedule/{id}/delete(id=${schedule.id})}">Delete</a></td>
+    </tr>
+</table>
 </body>
 </html>

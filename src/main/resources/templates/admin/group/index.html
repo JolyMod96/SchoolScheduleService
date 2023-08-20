@@ -35,7 +35,11 @@
         <td th:text="${group.id}" />
         <td th:text="${group.name}" />
         <td th:text="${group.students.size()}" />
-        <td th:text="${#strings.arrayAppend(group.subjects.toArray(), ', ')}" />
+        <td>
+            <span th:each="subject, state : ${group.subjects}">
+                <span th:text="${subject.name}" /><span th:if="${!state.last}">,</span>
+            </span>
+        </td>
         <td><a th:href="@{/admin/group/{id}/edit(id=${group.id})}">Edit</a></td>
         <td><a th:href="@{/admin/group/{id}/delete(id=${group.id})}">Delete</a></td>
     </tr>

@@ -15,8 +15,8 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "groups")
-@EqualsAndHashCode(exclude = {"students", "subjects"})
-@ToString(exclude = {"students", "subjects"})
+@EqualsAndHashCode(exclude = {"students", "subjects", "schedules"})
+@ToString(exclude = {"students", "subjects", "schedules"})
 @NoArgsConstructor
 public class Group {
     @Id

@@ -28,7 +28,7 @@ public class ScheduleService {
 
     @Transactional
     public Schedule save(CreateScheduleCommand command) {
-        var schedule = new Schedule(command.getDateStart(), command.getDateEnd(), command.getWeeksRepeat());
+        var schedule = new Schedule(command.getDateStart(), command.getDateEnd(), command.getWeeksRepeat(), command.getIsSubstituteTeacher());
         command.getDaysOfWeekId().forEach(dayOfWeekId -> {
             var dayOfWeek = dayOfWeekRepository.findById(dayOfWeekId);
             if (dayOfWeek.isPresent()) {
@@ -114,5 +114,10 @@ public class ScheduleService {
             throw new RuntimeException("Teacher not found");
         });
         scheduleRepository.save(schedule);
+    }
+
+    @Transactional
+    public void delete(Schedule schedule) {
+        scheduleRepository.delete(schedule);
     }
 }

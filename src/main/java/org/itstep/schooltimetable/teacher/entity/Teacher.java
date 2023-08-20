@@ -15,8 +15,8 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "teachers")
-@EqualsAndHashCode(exclude = {"user", "subjects"})
-@ToString(exclude = {"user", "subjects"})
+@EqualsAndHashCode(exclude = {"user", "subjects", "schedules"})
+@ToString(exclude = {"user", "subjects", "schedules"})
 @NoArgsConstructor
 public class Teacher {
     @Id

@@ -36,11 +36,11 @@
   </label>
   <br/>
   <table>
-    <tr th:each="subject : ${subjects}">
+    <tr th:each="subject, state : ${subjects}">
+      <th th:if="${state.first}"><label>Subjects:</label></th>
+      <th th:if="${!state.first}"></th>
       <th>
-        <label>
-          <input type="checkbox" th:field="*{subjectsId}" th:text="${subject.name}" th:value="${subject.id}">
-        </label>
+        <label><input type="checkbox" th:field="*{subjectsId}" th:text="${subject.name}" th:value="${subject.id}"></label>
       </th>
     </tr>
   </table>

@@ -42,7 +42,7 @@
     <td th:text="${teacher.user.id}" />
     <td th:text="${teacher.user.username}" />
     <td>
-      <span th:each="subject, state: ${teacher.subjects}">
+      <span th:each="subject, state : ${teacher.subjects}">
         <span th:text="${subject.name}" /><span th:if="${!state.last}">,</span>
       </span>
     </td>

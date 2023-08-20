@@ -21,6 +21,7 @@ public class Schedule {
     private LocalDate dateStart;
     private LocalDate dateEnd;
     private Integer weeksRepeat;
+    private Boolean isSubstituteTeacher;
 
     @ManyToMany(mappedBy = "schedules")
     private Set<DayOfWeek> daysOfWeek = new HashSet<>();
@@ -29,18 +30,19 @@ public class Schedule {
     private Timetable timetable;
 
     @ManyToOne
-    private Subject subject;
+    private Group group;
 
     @ManyToOne
-    private Group group;
+    private Subject subject;
 
     @ManyToOne
     private Teacher teacher;
 
-    public Schedule(LocalDate dateStart, LocalDate dateEnd, Integer weeksRepeat) {
+    public Schedule(LocalDate dateStart, LocalDate dateEnd, Integer weeksRepeat, Boolean isSubstituteTeacher) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.weeksRepeat = weeksRepeat;
+        this.isSubstituteTeacher = isSubstituteTeacher;
     }
 
     public void removeAllDaysOfWeek() {
@@ -60,14 +62,14 @@ public class Schedule {
         teacher = null;
     }
 
-    public void removeGroup() {
-        group.getSchedules().remove(this);
-        group = null;
-    }
-
     public void removeSubject() {
         subject.getSchedules().remove(this);
         subject = null;
+    }
+
+    public void removeGroup() {
+        group.getSchedules().remove(this);
+        group = null;
     }
 
     public void removeTimetable() {
