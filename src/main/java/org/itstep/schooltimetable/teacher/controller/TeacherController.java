@@ -32,7 +32,7 @@ public class TeacherController {
     public String index(Authentication authentication, Model model) {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var teacher = teacherRepository.findByUserByUsername(username);
-        model.addAttribute("subjects", teacher.getSubjects());
+        model.addAttribute("teacher", teacher);
         return "/teacher/index";
     }
 
@@ -72,6 +72,7 @@ public class TeacherController {
             }
         }
 
+        model.addAttribute("teacher", teacher);
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);
         model.addAttribute("daysOfWeek", daysOfWeek);
         var timetables = timetableRepository.findAll().stream()

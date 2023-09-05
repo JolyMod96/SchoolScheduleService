@@ -155,7 +155,7 @@
                                     <nav class="main-menu ">
                                         <ul class="menu-area-main">
                                             <li class="active"> <a th:href="@{/home}">Home</a> </li>
-                                            <th:block th:each="role : ${student.user.authorities}">
+                                            <th:block th:each="role : ${teacher.user.authorities}">
                                                 <li> <a th:href="@{/teacher/schedule}">Schedule</a> </li>
                                                 <li th:if="${role.authority == 'ROLE_STUDENT'}"> <a th:href="@{/student}">Student Page</a> </li>
                                                 <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
@@ -176,38 +176,10 @@
 </header>
 <!-- end header -->
 
-<!-- start group and lessons info -->
+<!-- start subjects info -->
 <div id="about" class="about">
     <div class="container">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                <div class="about-box">
-                    <table class="table">
-                        <caption>Group</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Count</th>
-                            <th scope="col">Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="groupStudent, state : ${student.group.students}">
-                            <td data-label="Count">
-                                <span th:text="${state.count}"></span><span>.</span>
-                            </td>
-                            <td data-label="Name" class="name-user" th:if="${groupStudent == student}">
-                                <span th:text="${groupStudent.firstName}"></span>
-                                <span th:text="${groupStudent.lastName}"></span>
-                            </td>
-                            <td data-label="Name" th:if="${groupStudent != student}">
-                                <span th:text="${groupStudent.firstName}"></span>
-                                <span th:text="${groupStudent.lastName}"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                 <div class="about-box">
                     <table class="table">
@@ -218,7 +190,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="subject : ${student.group.subjects}">
+                        <tr th:each="subject : ${teacher.subjects}">
                             <td data-label="Name">
                                 <span th:text="${subject.name}"></span>
                             </td>
@@ -230,7 +202,7 @@
         </div>
     </div>
 </div>
-<!-- end group and lessons info -->
+<!-- end subjects info -->
 
 <!-- start copyright -->
 <div class="copyright">
