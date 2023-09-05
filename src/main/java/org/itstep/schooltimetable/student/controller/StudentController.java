@@ -28,19 +28,16 @@ public class StudentController {
     private final TimetableRepository timetableRepository;
 
     @GetMapping(path = {"/student/", "/student"})
-    public String index(Authentication authentication) {
+    public String index(Authentication authentication, Model model) {
+//        var username = ((User) authentication.getPrincipal()).getUsername();
+//        var student = studentRepository.findByUserByUsername(username);
+//        model.addAttribute("group", student.getGroup());
+
         var username = ((User) authentication.getPrincipal()).getUsername();
         var student = studentRepository.findByUserByUsername(username);
+        model.addAttribute("student", student);
 
         return "student/index";
-    }
-
-    @GetMapping(path = { "/student/group/", "/student/group" })
-    public String getGroup(Authentication authentication, Model model) {
-        var username = ((User) authentication.getPrincipal()).getUsername();
-        var student = studentRepository.findByUserByUsername(username);
-        model.addAttribute("group", student.getGroup());
-        return "student/group/index";
     }
 
     @GetMapping(path = { "/student/schedule/", "/student/schedule" })
@@ -58,11 +55,10 @@ public class StudentController {
         var currentWeekSchedules = new ArrayList<>(schedules.stream()
                 .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1 &&
                         selectedWeekDate.plusDays(6).compareTo(schedule.getDateEnd()) < 1)
-                .toList());
-        currentWeekSchedules.sort(Comparator.comparingLong(schedule -> schedule.getTimetable().getId()));
+                .sorted(Comparator.comparingLong(schedule -> schedule.getTimetable().getId())).toList());
 
-        var daysOfWeek = dayOfWeekRepository.findAll();
-        daysOfWeek.sort(Comparator.comparingLong(DayOfWeek::getId));
+        var daysOfWeek = dayOfWeekRepository.findAll().stream()
+                .sorted(Comparator.comparingLong(DayOfWeek::getId)).toList();
 
         var weekDaysTimetablesSchedules = new HashMap<DayOfWeek, Map<Timetable, List<Schedule>>>();
 
@@ -80,10 +76,11 @@ public class StudentController {
             }
         }
 
+        model.addAttribute("student", student);
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);
-        model.addAttribute("dayOfWeeks", daysOfWeek);
-        var timetables = timetableRepository.findAll();
-        timetables.sort(Comparator.comparingLong(Timetable::getId));
+        model.addAttribute("daysOfWeek", daysOfWeek);
+        var timetables = timetableRepository.findAll().stream()
+                .sorted(Comparator.comparingLong(Timetable::getId)).toList();
         model.addAttribute("timetables", timetables);
         return "student/schedule/index";
     }

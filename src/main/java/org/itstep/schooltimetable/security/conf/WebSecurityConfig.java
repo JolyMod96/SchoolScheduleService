@@ -19,7 +19,9 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll()
-                        .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers("/home/").permitAll()
+                        .requestMatchers("/change-password/").permitAll()
+                        //.requestMatchers(antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(antMatcher("/css/**")).permitAll()
                         .requestMatchers(antMatcher("/icon/**")).permitAll()
                         .requestMatchers(antMatcher("/images/**")).permitAll()
@@ -32,7 +34,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())
-                .csrf(csrf -> csrf.ignoringRequestMatchers(antMatcher("/h2-console/**")))
+                //.csrf(csrf -> csrf.ignoringRequestMatchers(antMatcher("/h2-console/**")))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(withDefaults())
                 .build();

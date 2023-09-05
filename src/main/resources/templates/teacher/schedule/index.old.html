@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Schedule page</title>
+</head>
+<body>
+<h1>Schedule page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Lesson</th>
+        <th>Start - End</th>
+        <th th:each="dayOfWeek : ${daysOfWeek}">
+            <span th:text="${dayOfWeek.name}"></span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="timetable : ${timetables}">
+        <td th:text="${timetable.name}">
+        </td>
+        <td>
+            <span th:text="${timetable.timeStartHM}"></span>
+            -
+            <span th:text="${timetable.timeEndHM}"></span>
+        </td>
+        <td th:each="dayOfWeek : ${daysOfWeek}">
+            <div th:if="${weekDaysTimetablesSchedules.containsKey(dayOfWeek) && weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(timetable)}">
+                <div th:each="schedule : ${weekDaysTimetablesSchedules.get(dayOfWeek).get(timetable)}">
+                    <span th:text="${schedule.subject.name}"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!--<div th:each="entry : ${weekDaysTimetablesSchedules.entrySet()}">-->
+<!--    <div th:text="${entry.key.name}"></div>-->
+<!--    <div th:each="timetable: ${entry.value}">-->
+<!--        <div th:text="${timetable.key.timeStart}"></div>-->
+<!--        <div th:text="${timetable.key.timeEnd}"></div>-->
+<!--        <div th:each="schedule: ${timetable.value}">-->
+<!--            <div th:text="${schedule.subject.name}"></div>-->
+<!--            <div>-->
+<!--                <span th:text="${schedule.teacher.firstName}"></span>-->
+<!--                <span th:text="${schedule.teacher.lastName}"></span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div th:text="${entry.value}"></div>-->
+<!--  <span th:each="schedules : ${entry.value.value}">-->
+<!--      <span th:each="schedule, state : ${schedules.getValue()}">-->
+<!--        <span th:text="${schedule.subject + ' (' + schedule.teacher.firstName + ' ' + schedule.teacher.lastName + ')'}"></span><span th:if="${!state.last}">,</span>-->
+<!--      </span>-->
+<!--    </span>-->
+<!--</div>-->
+</body>
+</html>

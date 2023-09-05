@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Student page</title>
+</head>
+<body>
+<h1>Student page</h1>
+<p th:text="${'Welcome ' + #authentication.name}"></p>
+
+<p th:text="${'Group Name: ' + group.name}"></p>
+<p>All group students:</p>
+<table border="1">
+    <tr>
+        <th>Count</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+    <tr th:each="student, state : ${group.students}">
+        <td>
+            <span th:text="${state.count}"></span><span>.</span>
+        </td>
+        <td th:text="${student.firstName}" />
+        <td th:text="${student.lastName}" />
+    </tr>
+</table>
+<p>All group subjects:</p>
+<table border="1">
+    <tr>
+        <th>Count</th>
+        <th>Name</th>
+    </tr>
+    <tr th:each="subject, state : ${group.subjects}">
+        <td>
+            <span th:text="${state.count}"></span><span>.</span>
+        </td>
+        <td th:text="${subject.name}"></td>
+    </tr>
+</table>
+</body>
+</html>

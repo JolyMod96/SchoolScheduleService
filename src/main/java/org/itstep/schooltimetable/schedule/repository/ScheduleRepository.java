@@ -10,4 +10,7 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query("from Schedule s where s.group.id=:groupId")
     List<Schedule> findAllByGroupId(@Param("groupId") long groupId);
+
+    @Query("from Schedule s where s.teacher.id=:teacherId")
+    List<Schedule> findAllByTeacherId(@Param("teacherId") long teacherId);
 }
