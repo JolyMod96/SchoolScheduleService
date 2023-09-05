@@ -55,7 +55,10 @@ public class AdminScheduleController {
     @GetMapping(path = { "/admin/schedule/{id}/edit/", "/admin/schedule/{id}/edit" })
     public String scheduleEdit(@PathVariable(value = "id") long id, Model model) {
         var schedule = scheduleService.findById(id).orElseThrow();
-        var command = new EditScheduleCommand(schedule.getDateStart(), schedule.getDateEnd(), schedule.getWeeksRepeat(), schedule.getDaysOfWeekId(), schedule.getTimetable().getId(), schedule.getSubject().getId(), schedule.getGroup().getId(), false, schedule.getTeacher().getId());
+        var command = new EditScheduleCommand(schedule.getDateStart(),
+                schedule.getDateEnd(), schedule.getWeeksRepeat(),
+                schedule.getDaysOfWeekId(), schedule.getTimetable().getId(),
+                schedule.getSubject().getId(), schedule.getGroup().getId(), schedule.getIsSubstituteTeacher(), schedule.getTeacher().getId());
         model.addAttribute("command", command);
         model.addAttribute("daysOfWeek", dayOfWeekRepository.findAll());
         model.addAttribute("timetables", timetableService.findAllTimetables());

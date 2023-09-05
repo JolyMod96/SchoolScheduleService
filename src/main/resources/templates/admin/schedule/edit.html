@@ -19,11 +19,11 @@
 <form method="post" th:object="${command}">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <label>Date Start:
-        <input type="date" th:field="*{dateStart}">
+        <input type="date" th:value="${#temporals.format(command.dateStart, 'yyyy-MM-dd')}" name="dateStart">
     </label>
     <br />
     <label>Date End:
-        <input type="date" th:field="*{dateEnd}">
+        <input type="date" th:value="${#temporals.format(command.dateEnd, 'yyyy-MM-dd')}" name="dateEnd">
     </label>
     <br />
     <label>Weeks Repeat:
@@ -59,7 +59,7 @@
     </label>
     <br />
     <label>Is Substitute Teacher:
-        <input type="checkbox" th:field="*{isSubstituteTeacher}">
+        <input type="checkbox" th:field="*{substituteTeacher}">
     </label>
     <br />
     <label>Teacher:

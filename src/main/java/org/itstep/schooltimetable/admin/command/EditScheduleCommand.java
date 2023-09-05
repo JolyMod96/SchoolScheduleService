@@ -3,6 +3,7 @@ package org.itstep.schooltimetable.admin.command;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -18,6 +19,6 @@ public class EditScheduleCommand {
     private Long timetableId;
     private Long groupId;
     private Long subjectId;
-    private Boolean isSubstituteTeacher;
+    private boolean isSubstituteTeacher;
     private Long teacherId;
 }

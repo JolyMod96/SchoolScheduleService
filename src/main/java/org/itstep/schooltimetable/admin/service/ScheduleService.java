@@ -79,7 +79,7 @@ public class ScheduleService {
         schedule.setDateStart(command.getDateStart());
         schedule.setDateEnd(command.getDateEnd());
         schedule.setWeeksRepeat(command.getWeeksRepeat());
-        schedule.setIsSubstituteTeacher(command.getIsSubstituteTeacher());
+        schedule.setIsSubstituteTeacher(command.isSubstituteTeacher());
         schedule.removeAll();
         command.getDaysOfWeekId().forEach(dayOfWeekId -> {
             var dayOfWeek = dayOfWeekRepository.findById(dayOfWeekId);
