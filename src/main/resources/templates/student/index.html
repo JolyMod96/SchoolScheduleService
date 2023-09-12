@@ -155,8 +155,8 @@
                                     <nav class="main-menu ">
                                         <ul class="menu-area-main">
                                             <li class="active"> <a th:href="@{/home}">Home</a> </li>
+                                            <li> <a th:href="@{/student/schedule}">Schedule</a> </li>
                                             <th:block th:each="role : ${student.user.authorities}">
-                                                <li> <a th:href="@{/student/schedule}">Schedule</a> </li>
                                                 <li th:if="${role.authority == 'ROLE_TEACHER'}"> <a th:href="@{/teacher}">Teacher Page</a> </li>
                                                 <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
                                             </th:block>
@@ -165,7 +165,11 @@
                                 </div>
                             </div>
                             <div class="mean-last">
-                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a> <a th:href="@{/login}">login</a></div>
+<!--                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a>-->
+                                <a th:href="@{/logout}">
+                                    <span th:text="${student.firstName}"></span>
+                                    <span th:text="${student.lastName}"></span>
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -240,15 +244,15 @@
 </div>
 <!-- end copyright -->
 <!-- Javascript files-->
-<script th:src="@{js/jquery.min.js}"></script>
-<script th:src="@{js/popper.min.js}"></script>
-<script th:src="@{js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{js/jquery-3.0.0.min.js}"></script>
-<script th:src="@{js/plugin.js}"></script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script th:src="@{/js/plugin.js}"></script>
 <!-- sidebar -->
-<script th:src="@{js/jquery.mCustomScrollbar.concat.min.js}"></script>
-<script th:src="@{js/custom.js}"></script>
-<script th:src="@{https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
 </body>
 

@@ -29,10 +29,6 @@ public class StudentController {
 
     @GetMapping(path = {"/student/", "/student"})
     public String index(Authentication authentication, Model model) {
-//        var username = ((User) authentication.getPrincipal()).getUsername();
-//        var student = studentRepository.findByUserByUsername(username);
-//        model.addAttribute("group", student.getGroup());
-
         var username = ((User) authentication.getPrincipal()).getUsername();
         var student = studentRepository.findByUserByUsername(username);
         model.addAttribute("student", student);
@@ -53,8 +49,7 @@ public class StudentController {
         var schedules = scheduleRepository.findAllByGroupId(student.getGroup().getId());
         var selectedWeekDate = LocalDate.of(year, month, dayOfMonth);
         var currentWeekSchedules = new ArrayList<>(schedules.stream()
-                .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1 &&
-                        selectedWeekDate.plusDays(6).compareTo(schedule.getDateEnd()) < 1)
+                .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1)
                 .sorted(Comparator.comparingLong(schedule -> schedule.getTimetable().getId())).toList());
 
         var daysOfWeek = dayOfWeekRepository.findAll().stream()
@@ -64,7 +59,8 @@ public class StudentController {
 
         for (var schedule : currentWeekSchedules) {
             for (var dayOfWeek : daysOfWeek) {
-                if (schedule.getDaysOfWeek().contains(dayOfWeek)) {
+                if (schedule.getDaysOfWeek().contains(dayOfWeek) &&
+                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue()])).compareTo(schedule.getDateEnd()) < 1) {
                     if (!weekDaysTimetablesSchedules.containsKey(dayOfWeek)) {
                         weekDaysTimetablesSchedules.put(dayOfWeek, new HashMap<>());
                     }
@@ -83,6 +79,21 @@ public class StudentController {
                 .sorted(Comparator.comparingLong(Timetable::getId)).toList();
         model.addAttribute("timetables", timetables);
         return "student/schedule/index";
+    }
+
+    @GetMapping(path = { "/student/schedule/{id}/details/" , "/student/schedule/{id}/details" })
+    public String getScheduleDetails(@PathVariable(name = "id") long id, Authentication authentication, Model model) {
+        var username = ((User) authentication.getPrincipal()).getUsername();
+        var student = studentRepository.findByUserByUsername(username);
+        var schedule = scheduleRepository.findById(id).orElseThrow();
+        if (student.getGroup() != schedule.getGroup()) {
+            return "redirect:/student/schedule";
+        }
+
+        model.addAttribute("student", student);
+        model.addAttribute("schedule", schedule);
+
+        return "student/schedule/details";
     }
 
 }

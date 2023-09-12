@@ -34,6 +34,90 @@
     .about .about-box p {
       padding: 0 0;
     }
+
+    .table {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .table caption {
+      font-size: 1.5em;
+      margin: .5em 0 .75em;
+      caption-side: top !important;
+      color: black !important;
+    }
+
+    .table tr {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: .35em;
+    }
+
+    .table th,
+    .table td {
+      padding: .625em;
+      text-align: center;
+      color: black !important;
+    }
+
+    .table th {
+      font-size: .85em;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 600px) {
+      .table {
+        border: 0;
+      }
+
+      .table caption {
+        font-size: 1.3em;
+      }
+
+      .table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+
+      .table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+      }
+
+      .table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+      }
+
+      .table td::before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .table td:last-child {
+        border-bottom: 0;
+      }
+    }
   </style>
 </head>
 <!-- body -->
@@ -66,9 +150,9 @@
                 <div class="limit-box">
                   <nav class="main-menu ">
                     <ul class="menu-area-main">
-                      <li class="active"> <a th:href="@{/}">Home</a> </li>
-                      <th:block th:each="role : ${user.authorities}">
-                        <li th:if="${role.authority == 'ROLE_STUDENT'}"> <a th:href="@{/student}">Student Page</a> </li>
+                      <li class="active"> <a th:href="@{/home}">Home</a> </li>
+                      <li> <a th:href="@{/student/schedule}">Schedule</a> </li>
+                      <th:block th:each="role : ${student.user.authorities}">
                         <li th:if="${role.authority == 'ROLE_TEACHER'}"> <a th:href="@{/teacher}">Teacher Page</a> </li>
                         <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
                       </th:block>
@@ -77,11 +161,10 @@
                 </div>
               </div>
               <div class="mean-last">
-<!--                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a> <a th:href="@{/login}">login</a></div>-->
+<!--                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a>-->
                 <a th:href="@{/logout}">
-                  <span th:if="${firstName}" th:text="${firstName}"></span>
-                  <span th:if="${lastName}" th:text="${lastName}"></span>
-                  <span th:if="${firstName == null && lastName == null}" th:text="${user.username}"></span>
+                  <span th:text="${student.firstName}"></span>
+                  <span th:text="${student.lastName}"></span>
                 </a>
             </div>
           </div>
@@ -93,35 +176,58 @@
 </header>
 <!-- end header -->
 
-<!-- start user info -->
+<!-- start schedule details -->
 <div id="about" class="about">
   <div class="container">
     <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-        <div class="about-box">
-          <p th:if="${firstName != null}">
-            <span>First Name:</span>
-            <span th:text="${firstName}"></span>
-          </p>
-          <p th:if="${lastName != null}">
-            <span>Last Name:</span>
-            <span th:text="${lastName}"></span>
-          </p>
-          <p th:if="${user.student != null}">
-            <span>Group:</span>
-            <span th:if="${user.student.group != null}" th:text="${user.student.group.name}"></span>
-          </p>
-          <p>
-            <span>Username:</span>
-            <span th:text="${user.username}"></span>
-          </p>
-          <a th:href="@{/logout}">Logout</a>
-        </div>
-      </div>
+      <table class="table">
+        <caption>Schedule Details</caption>
+        <thead>
+        <tr>
+          <th scope="col">Date Start</th>
+          <th scope="col">Date End</th>
+          <th scope="col">Days Of Week</th>
+          <th scope="col">Timetable</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Teacher</th>
+          <th scope="col">Is Substitute Teacher</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td data-label="Date Start">
+            <span th:text="${schedule.dateStart}"></span>
+          </td>
+          <td data-label="Date End">
+            <span th:text="${schedule.dateEnd}"></span>
+          </td>
+          <td data-label="Days Of Week">
+            <th:block th:each="dayOfWeek, state : ${schedule.daysOfWeek}">
+              <span th:text="${dayOfWeek.name}"></span><span th:if="${!state.last}">,</span>
+            </th:block>
+          </td>
+          <td data-label="Timetable">
+            <span th:text="${schedule.timetable.timeStartHM}"></span>
+            -
+            <span th:text="${schedule.timetable.timeEndHM}"></span>
+          </td>
+          <td data-label="Subject">
+            <span th:text="${schedule.subject.name}"></span>
+          </td>
+          <td data-label="Teacher">
+            <span th:text="${schedule.teacher.firstName}"></span>
+            <span th:text="${schedule.teacher.lastName}"></span>
+          </td>
+          <td data-label="Is Substitute Teacher">
+            <span th:text="${schedule.isSubstituteTeacher}"></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<!-- end user info -->
+<!-- end schedule details -->
 
 <!-- start copyright -->
 <div class="copyright">

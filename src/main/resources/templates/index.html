@@ -125,7 +125,7 @@
 
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
                     <div class="images_box">
-                      <figure><img th:src="@{images/img2.png}"></figure>
+                      <figure><img th:src="@{/images/img2.png}"></figure>
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
                     <div class="images_box">
-                      <figure><img th:src="@{images/img2.png}"></figure>
+                      <figure><img th:src="@{/images/img2.png}"></figure>
                     </div>
                   </div>
                 </div>
@@ -185,12 +185,12 @@
           <p> orem ipsum dolor sit amet, consectetur adipisicing elit. Quas voluptatem maiores eaque similique non distinctio voluptates perspiciatis omnis, repellendus ipsa aperiam, laudantium voluptatum nulla?.
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, assumenda, vo
           luptatum. Libero eligendi molestias iure error animi totam laudantium, aspernatur similique id eos at consectetur illo culpa,  </p>
-          <a href="Javascript:void(0)">Read more</a>
+          <a th:href="@{/login}">Login</a>
         </div>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
         <div class="about-box">
-          <figure><img th:src="@{images/about.jpg}" alt="#" /></figure>
+          <figure><img th:src="@{/images/about.jpg}" alt="#" /></figure>
         </div>
       </div>
     </div>
@@ -265,7 +265,7 @@
             <div class="row">
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                 <div class="box_my">
-                  <figure><img th:src="@{images/my1.jpg}"></figure>
+                  <figure><img th:src="@{/images/my1.jpg}"></figure>
                   <div class="overlay">
                     <h3>Data Structures</h3>
                     <p>It is a long established fact that a reader will be distracted by the readable content o</p>
@@ -274,7 +274,7 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                 <div class="box_my">
-                  <figure><img th:src="@{images/my2.jpg}"></figure>
+                  <figure><img th:src="@{/images/my2.jpg}"></figure>
                   <div class="overlay">
                     <h3>Cinematography</h3>
                     <p>It is a long established fact that a reader will be distracted by the readable content o</p>
@@ -283,7 +283,7 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                 <div class="box_my">
-                  <figure><img th:src="@{images/my3.jpg}"></figure>
+                  <figure><img th:src="@{/images/my3.jpg}"></figure>
                   <div class="overlay">
                     <h3>Skills</h3>
                     <p>It is a long established fact that a reader will be distracted by the readable content o</p>
@@ -292,7 +292,7 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                 <div class="box_my">
-                  <figure><img th:src="@{images/my4.jpg}"></figure>
+                  <figure><img th:src="@{/images/my4.jpg}"></figure>
                   <div class="overlay">
                     <h3>Teaching Science</h3>
                     <p>It is a long established fact that a reader will be distracted by the readable content o</p>
@@ -336,7 +336,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="learn_box">
-          <figure><img th:src="@{images/img.jpg}" alt="img"/></figure>
+          <figure><img th:src="@{/images/img.jpg}" alt="img"/></figure>
         </div>
       </div>
     </div>
@@ -362,7 +362,7 @@
       </div>
       <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
         <div class="make_img">
-          <figure><img th:src="@{images/make_img.jpg}"></figure>
+          <figure><img th:src="@{/images/make_img.jpg}"></figure>
         </div>
       </div>
     </div>
@@ -379,15 +379,15 @@
   </div>
 <!-- end copyright -->
           <!-- Javascript files-->
-          <script th:src="@{js/jquery.min.js}"></script>
-          <script th:src="@{js/popper.min.js}"></script>
-          <script th:src="@{js/bootstrap.bundle.min.js}"></script>
-          <script th:src="@{js/jquery-3.0.0.min.js}"></script>
-          <script th:src="@{js/plugin.js}"></script>
+          <script th:src="@{/js/jquery.min.js}"></script>
+          <script th:src="@{/js/popper.min.js}"></script>
+          <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+          <script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+          <script th:src="@{/js/plugin.js}"></script>
           <!-- sidebar -->
-          <script th:src="@{js/jquery.mCustomScrollbar.concat.min.js}"></script>
-          <script th:src="@{js/custom.js}"></script>
-          <script th:src="@{https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js}"></script>
+          <script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+          <script th:src="@{/js/custom.js}"></script>
+          <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
 
           <script>

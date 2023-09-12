@@ -190,9 +190,9 @@
                                 <div class="limit-box">
                                     <nav class="main-menu ">
                                         <ul class="menu-area-main">
-                                            <li class="active"> <a th:href="@{/}">Home</a> </li>
+                                            <li class="active"> <a th:href="@{/home}">Home</a> </li>
                                             <li> <a th:href="@{/teacher}">Teacher Page</a> </li>
-                                            <th:block th:each="role : ${student.user.authorities}">
+                                            <th:block th:each="role : ${teacher.user.authorities}">
                                                 <li th:if="${role.authority == 'ROLE_STUDENT'}"> <a th:href="@{/student}">Student Page</a> </li>
                                                 <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
                                             </th:block>
@@ -201,7 +201,11 @@
                                 </div>
                             </div>
                             <div class="mean-last">
-                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a> <a th:href="@{/login}">login</a></div>
+<!--                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a>-->
+                                <a th:href="@{/logout}">
+                                    <span th:text="${teacher.firstName}"></span>
+                                    <span th:text="${teacher.lastName}"></span>
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -218,65 +222,41 @@
         <div class="row">
             <div class="timetable">
                 <div class="week-names">
-                    <div>monday</div>
-                    <div>tuesday</div>
-                    <div>wednesday</div>
-                    <div>thursday</div>
-                    <div>friday</div>
-                    <div class="weekend">saturday</div>
-                    <div class="weekend">sunday</div>
+                    <th:block th:each="dayOfWeek, state : ${daysOfWeek}">
+                        <div th:if="${(state.size - state.index) > 2}" th:text="${dayOfWeek.name}"></div>
+                        <div th:if="${(state.size - state.index) <= 2}" th:text="${dayOfWeek.name}" class="weekend"></div>
+                    </th:block>
                 </div>
                 <div class="time-interval">
-                    <div>8:00 - 10:00</div>
-                    <div>10:00 - 12:00</div>
-                    <div>12:00 - 14:00</div>
-                    <div>14:00 - 16:00</div>
-                    <div>16:00 - 18:00</div>
-                    <div>18:00 - 20:00</div>
+                    <th:block th:each="timetable : ${timetables}">
+                        <div>
+                            <span th:text="${timetable.timeStartHM}"></span>
+                            -
+                            <span th:text="${timetable.timeEndHM}"></span>
+                        </div>
+                    </th:block>
                 </div>
                 <div class="content">
-                    <div><div class="accent-purple-gradient">42</div></div>
-                    <div>41</div>
-                    <div>40</div>
-                    <div>39</div>
-                    <div><div class="accent-purple-gradient">38</div></div>
-                    <div class="weekend">37</div>
-                    <div class="weekend">36</div>
-                    <div>35</div>
-                    <div>34</div>
-                    <div>33</div>
-                    <div><div class="accent-purple-gradient">32</div></div>
-                    <div>31</div>
-                    <div class="weekend">30</div>
-                    <div class="weekend">29</div>
-                    <div><div class="accent-purple-gradient">28</div></div>
-                    <div>27</div>
-                    <div><div class="accent-purple-gradient">26</div></div>
-                    <div>25</div>
-                    <div>24</div>
-                    <div class="weekend">23</div>
-                    <div class="weekend">22</div>
-                    <div>21</div>
-                    <div>20</div>
-                    <div>19</div>
-                    <div>18</div>
-                    <div>17</div>
-                    <div class="weekend">16</div>
-                    <div class="weekend">15</div>
-                    <div><div class="accent-purple-gradient">14</div></div>
-                    <div>13</div>
-                    <div>12</div>
-                    <div>11</div>
-                    <div>10</div>
-                    <div class="weekend">9</div>
-                    <div class="weekend">8</div>
-                    <div>7</div>
-                    <div>6</div>
-                    <div>5</div>
-                    <div>4</div>
-                    <div>3</div>
-                    <div class="weekend">2</div>
-                    <div class="weekend">1</div>
+                    <th:block th:each="timetable : ${timetables}">
+                        <th:block th:each="dayOfWeek, dayOfWeekState : ${daysOfWeek}">
+                            <div th:if="${(dayOfWeekState.size - dayOfWeekState.index) > 2}">
+                                <div th:if="${weekDaysTimetablesSchedules.containsKey(dayOfWeek) && weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(timetable)}" class="accent-purple-gradient">
+                                    <th:block th:each="schedule, scheduleState : ${weekDaysTimetablesSchedules.get(dayOfWeek).get(timetable)}">
+                                        <a th:href="@{/teacher/schedule/{id}/details(id=${schedule.id})}" th:text="${schedule.subject.name}"></a>
+                                        <span th:if="${!scheduleState.last}">/</span>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div th:if="${(dayOfWeekState.size - dayOfWeekState.index) <= 2}" class="weekend">
+                                <div th:if="${weekDaysTimetablesSchedules.containsKey(dayOfWeek) && weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(timetable)}" class="accent-purple-gradient">
+                                    <th:block th:each="schedule, scheduleState : ${weekDaysTimetablesSchedules.get(dayOfWeek).get(timetable)}">
+                                        <a th:href="@{/teacher/schedule/{id}/details(id=${schedule.id})}" th:text="${schedule.subject.name}"></a>
+                                        <span th:if="${!scheduleState.last}">/</span>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
                 </div>
             </div>
         </div>
@@ -292,15 +272,15 @@
 </div>
 <!-- end copyright -->
 <!-- Javascript files-->
-<script th:src="@{js/jquery.min.js}"></script>
-<script th:src="@{js/popper.min.js}"></script>
-<script th:src="@{js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{js/jquery-3.0.0.min.js}"></script>
-<script th:src="@{js/plugin.js}"></script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script th:src="@{/js/plugin.js}"></script>
 <!-- sidebar -->
-<script th:src="@{js/jquery.mCustomScrollbar.concat.min.js}"></script>
-<script th:src="@{js/custom.js}"></script>
-<script th:src="@{https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
 </body>
 

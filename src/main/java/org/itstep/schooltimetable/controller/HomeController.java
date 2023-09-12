@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class HomeController {
     private final CustomUserRepository customUserRepository;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     @GetMapping(path = "/")
     public String index() {
@@ -44,23 +44,23 @@ public class HomeController {
         return "/home/index";
     }
 
-    @GetMapping(path = { "/change-password/", "/change-password" })
-    public String changePassword(Model model) {
-        model.addAttribute("command", new ChangePasswordCommand());
-        return "/change-password/index";
-    }
+//    @GetMapping(path = { "/change-password/", "/change-password" })
+//    public String changePassword(Model model) {
+//        model.addAttribute("command", new ChangePasswordCommand());
+//        return "/change-password/index";
+//    }
 
-    @PostMapping(path = { "/change-password/", "/change-password" })
-    public String change(@Validated ChangePasswordCommand command, BindingResult bindingResult, Model model, Authentication authentication) {
-        // TODO: 31.08.2023 fix password checking problem
-        var user = customUserRepository.findByUsername(((User) authentication.getPrincipal()).getUsername()).orElseThrow();
-        if (bindingResult.hasErrors() || user.getPassword() != passwordEncoder.encode(command.getOldPassword())) {
-            model.addAttribute("errorMessage", "Incorrect password");
-            model.addAttribute("command", command);
-            return "/change-password/index";
-        }
-        // TODO: 31.08.2023 implement password changing
-        return "redirect:/home/";
-    }
+//    @PostMapping(path = { "/change-password/", "/change-password" })
+//    public String change(@Validated ChangePasswordCommand command, BindingResult bindingResult, Model model, Authentication authentication) {
+//        // fix password checking problem
+//        var user = customUserRepository.findByUsername(((User) authentication.getPrincipal()).getUsername()).orElseThrow();
+//        if (bindingResult.hasErrors() || user.getPassword() != passwordEncoder.encode(command.getOldPassword())) {
+//            model.addAttribute("errorMessage", "Incorrect password");
+//            model.addAttribute("command", command);
+//            return "/change-password/index";
+//        }
+//        // implement password changing
+//        return "redirect:/home/";
+//    }
 
 }

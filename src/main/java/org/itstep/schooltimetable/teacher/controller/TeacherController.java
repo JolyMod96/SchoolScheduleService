@@ -49,8 +49,7 @@ public class TeacherController {
         var schedules = scheduleRepository.findAllByTeacherId(teacher.getId());
         var selectedWeekDate = LocalDate.of(year, month, dayOfMonth);
         var currentWeekSchedules = new ArrayList<>(schedules.stream()
-                .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1 &&
-                        selectedWeekDate.plusDays(6).compareTo(schedule.getDateEnd()) < 1)
+                .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1)
                 .sorted(Comparator.comparingLong(schedule -> schedule.getTimetable().getId())).toList());
 
         var daysOfWeek = dayOfWeekRepository.findAll().stream()
@@ -60,7 +59,8 @@ public class TeacherController {
 
         for (var schedule : currentWeekSchedules) {
             for (var dayOfWeek : daysOfWeek) {
-                if (schedule.getDaysOfWeek().contains(dayOfWeek)) {
+                if (schedule.getDaysOfWeek().contains(dayOfWeek) &&
+                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue()])).compareTo(schedule.getDateEnd()) < 1) {
                     if (!weekDaysTimetablesSchedules.containsKey(dayOfWeek)) {
                         weekDaysTimetablesSchedules.put(dayOfWeek, new HashMap<>());
                     }
@@ -79,6 +79,21 @@ public class TeacherController {
                 .sorted(Comparator.comparingLong(Timetable::getId)).toList();
         model.addAttribute("timetables", timetables);
         return "teacher/schedule/index";
+    }
+
+    @GetMapping(path = { "/teacher/schedule/{id}/details/" , "/teacher/schedule/{id}/details" })
+    public String getScheduleDetails(@PathVariable(name = "id") long id, Authentication authentication, Model model) {
+        var username = ((User) authentication.getPrincipal()).getUsername();
+        var teacher = teacherRepository.findByUserByUsername(username);
+        var schedule = scheduleRepository.findById(id).orElseThrow();
+        if (teacher.getId() != schedule.getTeacher().getId()) {
+            return "redirect:/teacher/schedule";
+        }
+
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("schedule", schedule);
+
+        return "teacher/schedule/details";
     }
 
 }
