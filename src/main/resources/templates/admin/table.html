@@ -70,17 +70,17 @@
     </div>
 
     <!-- Nav Item - Admins Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item active">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminCreatorAdminsPages"
          aria-expanded="true" aria-controls="collapseAdminCreatorAdminsPages">
         <i class="fas fa-fw fa-folder"></i>
         <span>Admins</span>
       </a>
-      <div id="collapseAdminCreatorAdminsPages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div id="collapseAdminCreatorAdminsPages" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Control Admins:</h6>
           <a class="collapse-item" th:href="@{/admin/create}">Create</a>
-          <a class="collapse-item" th:href="@{/admin/table}">Table</a>
+          <a class="collapse-item active" th:href="@{/admin/table}">Table</a>
         </div>
       </div>
     </li>
@@ -145,18 +145,18 @@
     </li>
 
     <!-- Nav Item - Subjects Collapse Menu -->
-    <li class="nav-item active">
+    <li class="nav-item">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminSubjectsPages" aria-expanded="true"
          aria-controls="collapseAdminSubjectsPages">
         <i class="fas fa-fw fa-folder"></i>
         <span>Subjects</span>
       </a>
-      <div id="collapseAdminSubjectsPages" class="collapse show" aria-labelledby="headingPages"
+      <div id="collapseAdminSubjectsPages" class="collapse" aria-labelledby="headingPages"
            data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Control Subjects:</h6>
           <a class="collapse-item" th:href="@{/admin/subject/create}">Create</a>
-          <a class="collapse-item active" th:href="@{/admin/subject}">Table</a>
+          <a class="collapse-item" th:href="@{/admin/subject}">Table</a>
         </div>
       </div>
     </li>
@@ -254,33 +254,26 @@
                 <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Name</th>
-                  <th data-orderable="false" data-searchable="false"></th>
+                  <th>Login</th>
+                  <th>Is Admin Creator</th>
                   <th data-orderable="false" data-searchable="false"></th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                   <th>Id</th>
-                  <th>Name</th>
-                  <th></th>
+                  <th>Login</th>
+                  <th>Is Admin Creator</th>
                   <th></th>
                 </tr>
                 </tfoot>
                 <tbody>
-                <tr th:each="subject : ${subjects}">
-                  <td th:text="${subject.id}" />
-                  <td th:text="${subject.name}" />
+                <tr th:each="admin : ${admins}">
+                  <td th:text="${admin.id}" />
+                  <td th:text="${admin.username}" />
+                  <td th:text="${admin.isAdminCreator}" />
                   <td>
-                    <a th:href="@{/admin/subject/{id}/edit(id=${subject.id})}" class="btn btn-warning btn-icon-split">
-                      <span class="icon text-white-50">
-                        <i class="fas fa-exclamation-triangle"></i>
-                      </span>
-                      <span class="text">Edit</span>
-                    </a>
-                  </td>
-                  <td>
-                    <a th:href="@{/admin/subject/{id}/delete(id=${subject.id})}" class="btn btn-danger btn-icon-split">
+                    <a th:if="${admin.username != #authentication.name}" th:href="@{/admin/{id}/delete(id=${admin.id})}" class="btn btn-danger btn-icon-split">
                       <span class="icon text-white-50">
                         <i class="fas fa-trash"></i>
                       </span>

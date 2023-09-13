@@ -30,6 +30,12 @@ public class AdminController {
         return "admin/index";
     }
 
+    @GetMapping(path = {"/admin/table/", "/admin/table"})
+    public String table(Model model) {
+        model.addAttribute("admins", adminService.findAllAdmins());
+        return "admin/table";
+    }
+
     @GetMapping(path = {"/admin/create/", "/admin/create"})
     public String adminCreate(Model model) {
         //model.addAttribute("admins", adminService.findAllAdmins());
