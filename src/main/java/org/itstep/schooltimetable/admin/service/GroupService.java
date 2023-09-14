@@ -45,7 +45,7 @@ public class GroupService {
     }
 
     public void edit(long id, EditGroupCommand command) {
-        var group = groupRepository.findById(id).orElseThrow();
+        var group = groupRepository.findById(id).orElseThrow(() -> new RuntimeException("Group not found"));
         group.setName(command.getName());
         group.removeAllSubjects();
         command.getSubjectsId().forEach(subjectId -> {

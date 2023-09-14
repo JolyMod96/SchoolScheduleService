@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.itstep.schooltimetable.schedule.entity.Schedule;
 import org.itstep.schooltimetable.security.entity.CustomUser;
 import org.itstep.schooltimetable.subject.entity.Subject;
 
@@ -14,8 +15,8 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "teachers")
-@EqualsAndHashCode(exclude = {"user", "subjects"})
-@ToString(exclude = {"user", "subjects"})
+@EqualsAndHashCode(exclude = {"user", "subjects", "schedules"})
+@ToString(exclude = {"user", "subjects", "schedules"})
 @NoArgsConstructor
 public class Teacher {
     @Id
@@ -31,6 +32,9 @@ public class Teacher {
 
     @ManyToMany(mappedBy = "teachers")
     private Set<Subject> subjects = new HashSet<>();
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<Schedule> schedules = new HashSet<>();
 
     public Teacher(String firstName, String lastName) {
         this.firstName = firstName;

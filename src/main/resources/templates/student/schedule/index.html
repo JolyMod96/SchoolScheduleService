@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>mind</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- favicon -->
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/gif" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- style css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" th:href="@{css/jquery.mCustomScrollbar.min.css}">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" th:href="@{https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css}" media="screen">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style>
+        .about .about-box p {
+            padding: 0 0;
+        }
+
+        .timetable * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: 'Karla';
+            color: #546e7a;
+        }
+        .timetable {
+            display: grid;
+            grid-template-areas: ". week" "time content";
+            grid-template-columns: 120px;
+            grid-template-rows: 60px;
+            width: 100vw;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .timetable .accent-pink-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ee8ebc, #eea08e);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-pink-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(238, 142, 188, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .accent-orange-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #eec08e, #dcee8e);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-orange-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(238, 192, 142, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .accent-green-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #bcee8e, #8eeea0);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-green-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(188, 238, 142, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .accent-cyan-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8eeec0, #8edcee);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-cyan-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(142, 238, 192, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .accent-blue-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8ebcee, #a08eee);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-blue-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .accent-purple-gradient {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c08eee, #ee8edc);
+            transition: 0.2s ease box-shadow, 0.2s ease transform;
+        }
+        .timetable .accent-purple-gradient:hover {
+            box-shadow: 0 20px 30px 0 rgba(192, 142, 238, 0.3);
+            transform: scale(1.05);
+        }
+        .timetable .weekend {
+            background: #fbfbfc;
+            color: #87a1ad;
+        }
+        .timetable .week-names {
+            grid-area: week;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        .timetable .week-names > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 1px 0 0 #eceff1;
+        }
+        .timetable .time-interval {
+            grid-area: time;
+            display: grid;
+            grid-template-rows: repeat(7, 1fr);
+            font-size: 14px;
+        }
+        .timetable .time-interval > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 1px 0 0 #eceff1;
+        }
+        .timetable .content {
+            grid-area: content;
+            display: grid;
+            grid-template-rows: repeat(7, 1fr);
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .timetable .content > div {
+            box-shadow: inset 1px 0 0 #eceff1, inset 0 1px 0 0 #eceff1;
+        }
+
+    </style>
+</head>
+<!-- body -->
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img th:src="@{/images/loading.gif}" alt="#" /></div>
+</div>
+<!-- end loader -->
+<!-- header -->
+<header>
+    <!-- header inner -->
+    <div class="header-top">
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-3 col logo_section">
+                        <div class="full">
+                            <div class="center-desk">
+                                <div class="logo">
+                                    <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="#" /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-10 col-lg-8 col-md-8 col-sm-9">
+                        <div class="header_information">
+                            <div class="menu-area">
+                                <div class="limit-box">
+                                    <nav class="main-menu ">
+                                        <ul class="menu-area-main">
+                                            <li class="active"> <a th:href="@{/}">Home</a> </li>
+                                            <li> <a th:href="@{/student}">Student Page</a> </li>
+                                            <th:block th:each="role : ${student.user.authorities}">
+                                                <li th:if="${role.authority == 'ROLE_TEACHER'}"> <a th:href="@{/teacher}">Teacher Page</a> </li>
+                                                <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
+                                            </th:block>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="mean-last">
+<!--                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a>-->
+                                <a th:href="@{/logout}">
+                                    <span th:text="${student.firstName}"></span>
+                                    <span th:text="${student.lastName}"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header inner -->
+</header>
+<!-- end header -->
+
+<!-- start schedule table -->
+<div id="about" class="about">
+    <div class="container">
+        <div class="row">
+            <div class="timetable">
+                <div class="week-names">
+                    <th:block th:each="dayOfWeek, state : ${daysOfWeek}">
+                        <div th:if="${(state.size - state.index) > 2}" th:text="${dayOfWeek.name}"></div>
+                        <div th:if="${(state.size - state.index) <= 2}" th:text="${dayOfWeek.name}" class="weekend"></div>
+                    </th:block>
+                </div>
+                <div class="time-interval">
+                    <th:block th:each="timetable : ${timetables}">
+                        <div>
+                            <span th:text="${timetable.timeStartHM}"></span>
+                            -
+                            <span th:text="${timetable.timeEndHM}"></span>
+                        </div>
+                    </th:block>
+                </div>
+                <div class="content">
+                    <th:block th:each="timetable : ${timetables}">
+                        <th:block th:each="dayOfWeek, dayOfWeekState : ${daysOfWeek}">
+                            <div th:if="${(dayOfWeekState.size - dayOfWeekState.index) > 2}">
+                                <div th:if="${weekDaysTimetablesSchedules.containsKey(dayOfWeek) && weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(timetable)}" class="accent-purple-gradient">
+                                    <th:block th:each="schedule, scheduleState : ${weekDaysTimetablesSchedules.get(dayOfWeek).get(timetable)}">
+                                        <a th:href="@{/student/schedule/{id}/details(id=${schedule.id})}" th:text="${schedule.subject.name}"></a>
+                                        <span th:if="${!scheduleState.last}">/</span>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div th:if="${(dayOfWeekState.size - dayOfWeekState.index) <= 2}" class="weekend">
+                                <div th:if="${weekDaysTimetablesSchedules.containsKey(dayOfWeek) && weekDaysTimetablesSchedules.get(dayOfWeek).containsKey(timetable)}" class="accent-purple-gradient">
+                                    <th:block th:each="schedule, scheduleState : ${weekDaysTimetablesSchedules.get(dayOfWeek).get(timetable)}">
+                                        <a th:href="@{/student/schedule/{id}/details(id=${schedule.id})}" th:text="${schedule.subject.name}"></a>
+                                        <span th:if="${!scheduleState.last}">/</span>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end schedule table -->
+
+<!-- start copyright -->
+<div class="copyright">
+    <div class="container">
+        <p>Copyright © 2019 Design by <a th:href="@{https://html.design/}">Free Html Templates </a></p>
+    </div>
+</div>
+<!-- end copyright -->
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script th:src="@{/js/plugin.js}"></script>
+<!-- sidebar -->
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

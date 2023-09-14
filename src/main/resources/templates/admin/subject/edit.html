@@ -1,28 +1,325 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Subject page</title>
-    <style>
-        * {
-            background: red;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-<h1>Subject page</h1>
 
-<form method="post" th:object="${command}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <label>Name:
-        <input type="text" th:field="*{name}">
-    </label>
-    <br />
-    <input type="submit" />
-</form>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Home -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/home}">
+                <i class="fas fa-fw fa-arrow-right" style="transform: scaleX(-1);"></i>
+                <span>Home</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Start -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin}">
+                <i class="fas fa-fw fa-info-circle"></i>
+                <span>Start</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <th:block th:if="${isAdminCreator}">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Admin Creator
+            </div>
+
+            <!-- Nav Item - Admins Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminCreatorAdminsPages"
+                   aria-expanded="true" aria-controls="collapseAdminCreatorAdminsPages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Admins</span>
+                </a>
+                <div id="collapseAdminCreatorAdminsPages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Control Admins:</h6>
+                        <a class="collapse-item" th:href="@{/admin/create}">Create</a>
+                        <a class="collapse-item" th:href="@{/admin/table}">Table</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </th:block>
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Admin
+        </div>
+
+        <!-- Nav Item - Students Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminStudentsPages" aria-expanded="true"
+               aria-controls="collapseAdminStudentsPages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Students</span>
+            </a>
+            <div id="collapseAdminStudentsPages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Control Students:</h6>
+                    <a class="collapse-item" th:href="@{/admin/student/create}">Create</a>
+                    <a class="collapse-item" th:href="@{/admin/student}">Table</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Groups Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminGroupsPages" aria-expanded="true"
+               aria-controls="collapseAdminGroupsPages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Groups</span>
+            </a>
+            <div id="collapseAdminGroupsPages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Control Groups:</h6>
+                    <a class="collapse-item" th:href="@{/admin/group/create}">Create</a>
+                    <a class="collapse-item" th:href="@{/admin/group}">Table</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Teachers Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminTeachersPages" aria-expanded="true"
+               aria-controls="collapseAdminTeachersPages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Teachers</span>
+            </a>
+            <div id="collapseAdminTeachersPages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Control Teachers:</h6>
+                    <a class="collapse-item" th:href="@{/admin/teacher/create}">Create</a>
+                    <a class="collapse-item" th:href="@{/admin/teacher}">Table</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Subjects Collapse Menu -->
+        <li class="nav-item active">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminSubjectsPages" aria-expanded="true"
+               aria-controls="collapseAdminSubjectsPages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Subjects</span>
+            </a>
+            <div id="collapseAdminSubjectsPages" class="collapse show" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Control Subjects:</h6>
+                    <a class="collapse-item" th:href="@{/admin/subject/create}">Create</a>
+                    <a class="collapse-item active" th:href="@{/admin/subject}">Table</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Timetable Tables -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/timetable}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Timetables Table</span></a>
+        </li>
+
+        <!-- Nav Item - Schedules Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminSchedulesPages" aria-expanded="true"
+               aria-controls="collapseAdminSchedulesPages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Schedules</span>
+            </a>
+            <div id="collapseAdminSchedulesPages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Control Schedules:</h6>
+                    <a class="collapse-item" th:href="@{/admin/schedule/create}">Create</a>
+                    <a class="collapse-item" th:href="@{/admin/schedule}">Table</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${username}"></span>
+                            <img class="img-profile rounded-circle"
+                                 th:src="@{/img/undraw_profile.svg}">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" th:href="@{/logout}">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-4 text-gray-800">Subject Edit Page</h1>
+
+                <!-- Back Button -->
+                <a th:href="@{/admin/subject}" class="btn btn-light btn-icon-split">
+                    <span class="icon text-gray-600">
+                        <i class="fas fa-arrow-right" style="transform: scaleX(-1);"></i>
+                    </span>
+                    <span class="text">Back</span>
+                </a>
+
+                <!-- Form -->
+                <form method="post" th:object="${command}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <label>Name:
+                        <input type="text" th:field="*{name}">
+                    </label>
+                    <br/>
+                    <input type="submit" value="Send Update Request">
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2020</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
 </body>
+
 </html>

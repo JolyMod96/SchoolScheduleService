@@ -1009,7 +1009,7 @@ background: #0f052f;
 margin: 0 !important;
 padding: 30px 36px 30px 16px;
 float: right;
-margin-right: 110px !important;
+/*margin-right: 110px !important; breaks interface*/
 width: 24%;
 }
 

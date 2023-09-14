@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.itstep.schooltimetable.student.entity.Student;
 import org.itstep.schooltimetable.teacher.entity.Teacher;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,5 +58,19 @@ public class CustomUser implements UserDetails {
             authorities.add(role);
             role.getUsers().add(this);
         });
+    }
+
+    public boolean isAdminCreator() {
+        for (var role : authorities) {
+            if (role.getAuthority().matches("(.*)ADMIN_CREATOR")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @PreRemove
+    public void prepareToRemoveUser() {
+        removeAllRoles();
     }
 }

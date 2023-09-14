@@ -1,11 +1,227 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Teacher page</title>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>mind</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- favicon -->
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/gif" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- style css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" th:href="@{css/jquery.mCustomScrollbar.min.css}">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" th:href="@{https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css}" media="screen">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style>
+        .table .name-user {
+            color: #1bd2c7 !important;
+        }
+
+        .about .about-box p {
+            padding: 0 0;
+        }
+
+        .table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+            caption-side: top !important;
+            color: black !important;
+        }
+
+        .table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        .table th,
+        .table td {
+            padding: .625em;
+            text-align: center;
+            color: black !important;
+        }
+
+        .table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+            .table {
+                border: 0;
+            }
+
+            .table caption {
+                font-size: 1.3em;
+            }
+
+            .table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            .table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            .table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            .table td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .table td:last-child {
+                border-bottom: 0;
+            }
+        }
+    </style>
 </head>
-<body>
-<h1>Teacher page</h1>
-<p th:text="${'Welcome ' + #authentication.name}"></p>
+<!-- body -->
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img th:src="@{/images/loading.gif}" alt="#" /></div>
+</div>
+<!-- end loader -->
+<!-- header -->
+<header>
+    <!-- header inner -->
+    <div class="header-top">
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-3 col logo_section">
+                        <div class="full">
+                            <div class="center-desk">
+                                <div class="logo">
+                                    <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="#" /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-10 col-lg-8 col-md-8 col-sm-9">
+                        <div class="header_information">
+                            <div class="menu-area">
+                                <div class="limit-box">
+                                    <nav class="main-menu ">
+                                        <ul class="menu-area-main">
+                                            <li class="active"> <a th:href="@{/home}">Home</a> </li>
+                                            <li> <a th:href="@{/teacher/schedule}">Schedule</a> </li>
+                                            <th:block th:each="role : ${teacher.user.authorities}">
+                                                <li th:if="${role.authority == 'ROLE_STUDENT'}"> <a th:href="@{/student}">Student Page</a> </li>
+                                                <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
+                                            </th:block>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="mean-last">
+<!--                                <a href="#"><img th:src="@{/images/search_icon.png}" alt="#" /></a>-->
+                                <a th:href="@{/logout}">
+                                    <span th:text="${teacher.firstName}"></span>
+                                    <span th:text="${teacher.lastName}"></span>
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header inner -->
+</header>
+<!-- end header -->
+
+<!-- start subjects info -->
+<div id="about" class="about">
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <caption>Subjects</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subject : ${teacher.subjects}">
+                    <td data-label="Name">
+                        <span th:text="${subject.name}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- end subjects info -->
+
+<!-- start copyright -->
+<div class="copyright">
+    <div class="container">
+        <p>Copyright © 2019 Design by <a th:href="@{https://html.design/}">Free Html Templates </a></p>
+    </div>
+</div>
+<!-- end copyright -->
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script th:src="@{/js/plugin.js}"></script>
+<!-- sidebar -->
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
 </body>
+
 </html>
