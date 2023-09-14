@@ -47,7 +47,7 @@ public class StudentController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var student = studentRepository.findByUserByUsername(username);
         var schedules = scheduleRepository.findAllByGroupId(student.getGroup().getId());
-        var selectedWeekDate = LocalDate.of(year, month, dayOfMonth);
+        var selectedWeekDate = LocalDate.of(year, month, dayOfMonth).with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
         var currentWeekSchedules = new ArrayList<>(schedules.stream()
                 .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1)
                 .sorted(Comparator.comparingLong(schedule -> schedule.getTimetable().getId())).toList());
@@ -60,7 +60,7 @@ public class StudentController {
         for (var schedule : currentWeekSchedules) {
             for (var dayOfWeek : daysOfWeek) {
                 if (schedule.getDaysOfWeek().contains(dayOfWeek) &&
-                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue()])).compareTo(schedule.getDateEnd()) < 1) {
+                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue() - 1])).compareTo(schedule.getDateEnd()) < 1) {
                     if (!weekDaysTimetablesSchedules.containsKey(dayOfWeek)) {
                         weekDaysTimetablesSchedules.put(dayOfWeek, new HashMap<>());
                     }
@@ -71,6 +71,13 @@ public class StudentController {
                 }
             }
         }
+
+        var previousWeek = selectedWeekDate.with(TemporalAdjusters.previous(java.time.DayOfWeek.MONDAY));
+        var nextWeek = selectedWeekDate.with(TemporalAdjusters.next(java.time.DayOfWeek.MONDAY));
+        model.addAttribute("previousWeek", previousWeek);
+        model.addAttribute("nextWeek", nextWeek);
+        model.addAttribute("previousWeekUrl", "/teacher/schedule/%d/%d/%d".formatted(previousWeek.getDayOfMonth(), previousWeek.getMonth().getValue(), previousWeek.getYear()));
+        model.addAttribute("nextWeekUrl", "/teacher/schedule/%d/%d/%d".formatted(nextWeek.getDayOfMonth(), nextWeek.getMonth().getValue(), nextWeek.getYear()));
 
         model.addAttribute("student", student);
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);

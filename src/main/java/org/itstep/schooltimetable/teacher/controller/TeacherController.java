@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
@@ -47,7 +48,7 @@ public class TeacherController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var teacher = teacherRepository.findByUserByUsername(username);
         var schedules = scheduleRepository.findAllByTeacherId(teacher.getId());
-        var selectedWeekDate = LocalDate.of(year, month, dayOfMonth);
+        var selectedWeekDate = LocalDate.of(year, month, dayOfMonth).with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
         var currentWeekSchedules = new ArrayList<>(schedules.stream()
                 .filter(schedule -> selectedWeekDate.compareTo(schedule.getDateStart()) > -1)
                 .sorted(Comparator.comparingLong(schedule -> schedule.getTimetable().getId())).toList());
@@ -60,7 +61,7 @@ public class TeacherController {
         for (var schedule : currentWeekSchedules) {
             for (var dayOfWeek : daysOfWeek) {
                 if (schedule.getDaysOfWeek().contains(dayOfWeek) &&
-                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue()])).compareTo(schedule.getDateEnd()) < 1) {
+                        selectedWeekDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.values()[dayOfWeek.getId().intValue() - 1])).compareTo(schedule.getDateEnd()) < 1) {
                     if (!weekDaysTimetablesSchedules.containsKey(dayOfWeek)) {
                         weekDaysTimetablesSchedules.put(dayOfWeek, new HashMap<>());
                     }
@@ -71,6 +72,13 @@ public class TeacherController {
                 }
             }
         }
+
+        var previousWeek = selectedWeekDate.with(TemporalAdjusters.previous(java.time.DayOfWeek.MONDAY));
+        var nextWeek = selectedWeekDate.with(TemporalAdjusters.next(java.time.DayOfWeek.MONDAY));
+        model.addAttribute("previousWeek", previousWeek);
+        model.addAttribute("nextWeek", nextWeek);
+        model.addAttribute("previousWeekUrl", "/student/schedule/%d/%d/%d".formatted(previousWeek.getDayOfMonth(), previousWeek.getMonth().getValue(), previousWeek.getYear()));
+        model.addAttribute("nextWeekUrl", "/student/schedule/%d/%d/%d".formatted(nextWeek.getDayOfMonth(), nextWeek.getMonth().getValue(), nextWeek.getYear()));
 
         model.addAttribute("teacher", teacher);
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);
