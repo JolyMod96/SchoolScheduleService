@@ -66,12 +66,13 @@
                 <div class="limit-box">
                   <nav class="main-menu ">
                     <ul class="menu-area-main">
-                      <li class="active"> <a th:href="@{/}">Home</a> </li>
+                      <li class="active"> <a th:href="@{/}">Title Page</a> </li>
                       <th:block th:each="role : ${user.authorities}">
                         <li th:if="${role.authority == 'ROLE_STUDENT'}"> <a th:href="@{/student}">Student Page</a> </li>
                         <li th:if="${role.authority == 'ROLE_TEACHER'}"> <a th:href="@{/teacher}">Teacher Page</a> </li>
                         <li th:if="${role.authority == 'ROLE_ADMIN'}"> <a th:href="@{/admin}">Admin Panel</a> </li>
                       </th:block>
+                      <li><a></a></li>
                     </ul>
                   </nav>
                 </div>

@@ -14,7 +14,7 @@ import java.util.List;
 public class EditScheduleCommand {
     private LocalDate dateStart;
     private LocalDate dateEnd;
-    private Integer weeksRepeat;
+    private Integer weeksRepeat = 1;
     private List<Long> daysOfWeekId;
     private Long timetableId;
     private Long groupId;
