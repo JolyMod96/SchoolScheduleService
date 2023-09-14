@@ -224,8 +224,8 @@
             <div class="timetable">
                 <div class="week-names">
                     <th:block th:each="dayOfWeek, state : ${daysOfWeek}">
-                        <div th:if="${(state.size - state.index) > 2}" th:text="${dayOfWeek.name}"></div>
-                        <div th:if="${(state.size - state.index) <= 2}" th:text="${dayOfWeek.name}" class="weekend"></div>
+                        <div th:if="${(state.size - state.index) > 2}" th:text="${dayOfWeek.name + ' (' +currentWeek.plusDays(state.index) + ')'}"></div>
+                        <div th:if="${(state.size - state.index) <= 2}" th:text="${dayOfWeek.name + ' (' +currentWeek.plusDays(state.index) + ')'}" class="weekend"></div>
                     </th:block>
                 </div>
                 <div class="time-interval">

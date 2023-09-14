@@ -75,10 +75,11 @@ public class TeacherController {
 
         var previousWeek = selectedWeekDate.with(TemporalAdjusters.previous(java.time.DayOfWeek.MONDAY));
         var nextWeek = selectedWeekDate.with(TemporalAdjusters.next(java.time.DayOfWeek.MONDAY));
+        model.addAttribute("currentWeek", selectedWeekDate);
         model.addAttribute("previousWeek", previousWeek);
         model.addAttribute("nextWeek", nextWeek);
-        model.addAttribute("previousWeekUrl", "/student/schedule/%d/%d/%d".formatted(previousWeek.getDayOfMonth(), previousWeek.getMonth().getValue(), previousWeek.getYear()));
-        model.addAttribute("nextWeekUrl", "/student/schedule/%d/%d/%d".formatted(nextWeek.getDayOfMonth(), nextWeek.getMonth().getValue(), nextWeek.getYear()));
+        model.addAttribute("previousWeekUrl", "/teacher/schedule/%d/%d/%d".formatted(previousWeek.getDayOfMonth(), previousWeek.getMonth().getValue(), previousWeek.getYear()));
+        model.addAttribute("nextWeekUrl", "/teacher/schedule/%d/%d/%d".formatted(nextWeek.getDayOfMonth(), nextWeek.getMonth().getValue(), nextWeek.getYear()));
 
         model.addAttribute("teacher", teacher);
         model.addAttribute("weekDaysTimetablesSchedules", weekDaysTimetablesSchedules);
