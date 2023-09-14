@@ -47,7 +47,7 @@
     <!-- Nav Item - Home -->
     <li class="nav-item">
       <a class="nav-link" th:href="@{/home}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <i class="fas fa-fw fa-arrow-right" style="transform: scaleX(-1);"></i>
         <span>Home</span></a>
     </li>
 
@@ -57,7 +57,7 @@
     <!-- Nav Item - Start -->
     <li class="nav-item">
       <a class="nav-link" th:href="@{/admin}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <i class="fas fa-fw fa-info-circle"></i>
         <span>Start</span></a>
     </li>
 
@@ -243,7 +243,10 @@
       <!-- Begin Page Content -->
       <div class="container-fluid">
 
-        <!-- DataTales Example -->
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">Teachers Table Page</h1>
+
+        <!-- DataTables Table -->
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Admins</h6>
@@ -254,7 +257,6 @@
                 <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Login</th>
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>User Id</th>
@@ -267,7 +269,6 @@
                 <tfoot>
                 <tr>
                   <th>Id</th>
-                  <th>Login</th>
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>User Id</th>
@@ -280,7 +281,6 @@
                 <tbody>
                 <tr th:each="teacher : ${teachers}">
                   <td th:text="${teacher.id}" />
-                  <td th:text="${teacher.user.username}" />
                   <td th:text="${teacher.firstName}" />
                   <td th:text="${teacher.lastName}" />
                   <td th:text="${teacher.user.id}" />

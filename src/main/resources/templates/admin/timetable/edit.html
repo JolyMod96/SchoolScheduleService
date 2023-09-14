@@ -11,17 +11,14 @@
 
     <title>SB Admin 2</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
 
 </head>
 
@@ -64,29 +61,31 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Admin Creator
-        </div>
-
-        <!-- Nav Item - Admins Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseAdminCreatorAdminsPages"
-               aria-expanded="true" aria-controls="collapseAdminCreatorAdminsPages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Admins</span>
-            </a>
-            <div id="collapseAdminCreatorAdminsPages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Control Admins:</h6>
-                    <a class="collapse-item" th:href="@{/admin/create}">Create</a>
-                    <a class="collapse-item" th:href="@{/admin/table}">Table</a>
-                </div>
+        <th:block th:if="${isAdminCreator}">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Admin Creator
             </div>
-        </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
+            <!-- Nav Item - Admins Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminCreatorAdminsPages"
+                   aria-expanded="true" aria-controls="collapseAdminCreatorAdminsPages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Admins</span>
+                </a>
+                <div id="collapseAdminCreatorAdminsPages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Control Admins:</h6>
+                        <a class="collapse-item" th:href="@{/admin/create}">Create</a>
+                        <a class="collapse-item" th:href="@{/admin/table}">Table</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </th:block>
 
         <!-- Heading -->
         <div class="sidebar-heading">
@@ -206,11 +205,9 @@
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                 <!-- Sidebar Toggle (Topbar) -->
-                <form class="form-inline">
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                </form>
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -244,55 +241,30 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800">Timetables Table Page</h1>
+                <h1 class="h3 mb-4 text-gray-800">Timetable Edit Page</h1>
 
-                <!-- DataTables Table -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Admins</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th data-orderable="false" data-searchable="false"></th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th></th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <tr th:each="timetable : ${timetables}">
-                                    <td th:text="${timetable.id}" />
-                                    <td th:text="${timetable.name}" />
-                                    <td th:text="${timetable.timeStartHM}" />
-                                    <td th:text="${timetable.timeEndHM}" />
-                                    <td>
-                                        <a th:href="@{/admin/timetable/{id}/edit(id=${timetable.id})}" class="btn btn-warning btn-icon-split">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-exclamation-triangle"></i>
-                                            </span>
-                                            <span class="text">Edit</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <!-- Back Button -->
+                <a th:href="@{/admin/timetable}" class="btn btn-light btn-icon-split">
+                    <span class="icon text-gray-600">
+                        <i class="fas fa-arrow-right" style="transform: scaleX(-1);"></i>
+                    </span>
+                    <span class="text">Back</span>
+                </a>
 
+                <!-- Form -->
+                <form method="post" th:object="${command}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <label th:text="${'Name: ' + timetableName}" />
+                    <label>Start Time:
+                        <input type="text" pattern="^PT[1-2]?[0-9]H([0-5]?[0-9]M)?$" placeholder="PT##H##M" th:field="*{timeStart}">
+                    </label>
+                    <br/>
+                    <label>End Time:
+                        <input type="text" pattern="^PT[1-2]?[0-9]H([0-5]?[0-9]M)?$" placeholder="PT##H##M" th:field="*{timeEnd}">
+                    </label>
+                    <br/>
+                    <input type="submit" value="Send Update Request">
+                </form>
             </div>
             <!-- /.container-fluid -->
 
@@ -334,7 +306,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
             </div>
         </div>
     </div>
@@ -349,13 +321,6 @@
 
 <!-- Custom scripts for all pages-->
 <script th:src="@{/js/sb-admin-2.min.js}"></script>
-
-<!-- Page level plugins -->
-<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-<!-- Page level custom scripts -->
-<script th:src="@{/js/demo/datatables-demo.js}"></script>
 
 </body>
 

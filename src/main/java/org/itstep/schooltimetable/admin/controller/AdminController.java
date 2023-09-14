@@ -50,14 +50,14 @@ public class AdminController {
             return "admin/create";
         }
         adminService.save(command);
-        return "redirect:/admin/";
+        return "redirect:/admin/table/";
     }
 
     @GetMapping(path = {"/admin/{id}/delete/", "/admin/{id}/delete"})
     public String delete(@PathVariable(value = "id") long id) {
         var admin = adminService.findById(id).orElseThrow();
         adminService.delete(admin);
-        return "redirect:/admin/";
+        return "redirect:/admin/table/";
     }
 
 }
