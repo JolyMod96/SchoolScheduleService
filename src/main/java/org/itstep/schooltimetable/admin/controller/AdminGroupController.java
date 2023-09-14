@@ -28,6 +28,7 @@ public class AdminGroupController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("groups", groupService.findAllGroups());
         return "admin/group/index";
     }
@@ -38,6 +39,7 @@ public class AdminGroupController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", new CreateGroupCommand());
         model.addAttribute("subjects", subjectService.findAllSubjects());
         return "/admin/group/create";
@@ -49,6 +51,7 @@ public class AdminGroupController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/group/create";
         }
@@ -58,11 +61,12 @@ public class AdminGroupController {
 
     @GetMapping(path = {"/admin/group/{id}/edit/", "/admin/group/{id}/edit"})
     public String groupEdit(@PathVariable(value = "id") long id, Authentication authentication, Model model) {
+        var group = groupService.findById(id).orElseThrow();
+        var command = new EditGroupCommand(group.getName(), group.getSubjectsId());
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
-        var group = groupService.findById(id).orElseThrow();
-        var command = new EditGroupCommand(group.getName(), group.getSubjectsId());
+        model.addAttribute("username", username);
         model.addAttribute("command", command);
         model.addAttribute("subjects", subjectService.findAllSubjects());
         return "/admin/group/edit";
@@ -74,6 +78,7 @@ public class AdminGroupController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/group/edit";
         }

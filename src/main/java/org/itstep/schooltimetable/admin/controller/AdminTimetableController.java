@@ -25,6 +25,7 @@ public class AdminTimetableController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("timetables", timetableService.findAllTimetables());
         return "admin/timetable/index";
     }
@@ -36,6 +37,7 @@ public class AdminTimetableController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("timetableName", timetable.getName());
         model.addAttribute("command", command);
         return "admin/timetable/edit";
@@ -47,6 +49,7 @@ public class AdminTimetableController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "admin/timetable/edit";
         }

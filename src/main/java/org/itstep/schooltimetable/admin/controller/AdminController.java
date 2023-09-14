@@ -26,26 +26,33 @@ public class AdminController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", admin.getUsername());
         model.addAttribute("admins", adminService.findAllAdmins());
         return "admin/index";
     }
 
     @GetMapping(path = {"/admin/table/", "/admin/table"})
-    public String table(Model model) {
+    public String table(Authentication authentication, Model model) {
+        var username = ((User) authentication.getPrincipal()).getUsername();
+        model.addAttribute("username", username);
         model.addAttribute("admins", adminService.findAllAdmins());
         return "admin/table";
     }
 
     @GetMapping(path = {"/admin/create/", "/admin/create"})
-    public String adminCreate(Model model) {
+    public String adminCreate(Authentication authentication, Model model) {
         //model.addAttribute("admins", adminService.findAllAdmins());
+        var username = ((User) authentication.getPrincipal()).getUsername();
+        model.addAttribute("username", username);
         model.addAttribute("command", new CreateAdminCommand());
         return "admin/create";
     }
 
     @PostMapping(path = {"/admin/create/", "/admin/create"})
-    public String create(@Validated CreateAdminCommand command, BindingResult bindingResult, Model model) {
+    public String create(@Validated CreateAdminCommand command, Authentication authentication, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            var username = ((User) authentication.getPrincipal()).getUsername();
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "admin/create";
         }

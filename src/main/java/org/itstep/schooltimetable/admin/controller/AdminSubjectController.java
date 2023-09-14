@@ -27,6 +27,7 @@ public class AdminSubjectController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("subjects", subjectService.findAllSubjects());
         return "admin/subject/index";
     }
@@ -37,6 +38,7 @@ public class AdminSubjectController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", new CreateSubjectCommand());
         return "/admin/subject/create";
     }
@@ -47,6 +49,7 @@ public class AdminSubjectController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/subject/create";
         }
@@ -61,6 +64,7 @@ public class AdminSubjectController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", command);
         return "/admin/subject/edit";
     }
@@ -71,6 +75,7 @@ public class AdminSubjectController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/subject/edit";
         }

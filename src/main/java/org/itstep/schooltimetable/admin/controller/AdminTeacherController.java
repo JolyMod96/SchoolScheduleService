@@ -28,6 +28,7 @@ public class AdminTeacherController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("teachers", teacherService.findAllTeachers());
         return "admin/teacher/index";
     }
@@ -38,6 +39,7 @@ public class AdminTeacherController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", new CreateTeacherCommand());
         model.addAttribute("subjects", subjectService.findAllSubjects());
         return "admin/teacher/create";
@@ -49,6 +51,7 @@ public class AdminTeacherController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "admin/teacher/create";
         }
@@ -63,6 +66,7 @@ public class AdminTeacherController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", command);
         model.addAttribute("subjects", subjectService.findAllSubjects());
         return "admin/teacher/edit";
@@ -74,6 +78,7 @@ public class AdminTeacherController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "admin/teacher/edit";
         }

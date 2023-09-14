@@ -32,6 +32,7 @@ public class AdminScheduleController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("schedules", scheduleService.findAllSchedules());
         return "admin/schedule/index";
     }
@@ -42,6 +43,7 @@ public class AdminScheduleController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", new CreateScheduleCommand());
         model.addAttribute("daysOfWeek", dayOfWeekRepository.findAll());
         model.addAttribute("timetables", timetableService.findAllTimetables());
@@ -57,6 +59,7 @@ public class AdminScheduleController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/schedule/create";
         }
@@ -74,6 +77,7 @@ public class AdminScheduleController {
         var username = ((User) authentication.getPrincipal()).getUsername();
         var admin = adminService.findByUsername(username);
         model.addAttribute("isAdminCreator", admin.isAdminCreator());
+        model.addAttribute("username", username);
         model.addAttribute("command", command);
         model.addAttribute("daysOfWeek", dayOfWeekRepository.findAll());
         model.addAttribute("timetables", timetableService.findAllTimetables());
@@ -89,6 +93,7 @@ public class AdminScheduleController {
             var username = ((User) authentication.getPrincipal()).getUsername();
             var admin = adminService.findByUsername(username);
             model.addAttribute("isAdminCreator", admin.isAdminCreator());
+            model.addAttribute("username", username);
             model.addAttribute("command", command);
             return "/admin/schedule/edit";
         }
